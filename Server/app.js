@@ -14,6 +14,7 @@ app.get('/',(req,res)=>{
 })
 app.use("/api", routes);
 
-app.listen(3000, ()=>{
-    console.log("running");
+const PORT = process.env.PORT || 3000
+app.listen(PORT, ()=>{
+    console.log(`running on ${PORT}`);
 })
