@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  refreshToken: { type: String },
 });
 
 userSchema.methods.hashPassword = async function (next) {
