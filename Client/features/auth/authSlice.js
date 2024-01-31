@@ -1,9 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
+import {
+  registerFulfilled,
+  registerPending,
+  registerRejected,
+} from "./authCases";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const userFormLocalStorage = localStorage.getItem("user");
+const user = userFormLocalStorage ? JSON.parse(localStorage.getItem("user")) : null;
 const initialState = {
-  user: user ? user : null,
+  user,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -26,6 +32,11 @@ export const register = createAsyncThunk(
     }
   }
 );
+
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await authService.logout();
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -39,20 +50,13 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = action.payload.user;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload.message;
-        state.user = null
-      });
+      .addCase(register.pending, (state) => registerPending(state))
+      .addCase(register.fulfilled, (state, action) =>
+        registerFulfilled(state, action)
+      )
+      .addCase(register.rejected, (state, action) =>
+        registerRejected(state, action)
+      );
   },
 });
 
