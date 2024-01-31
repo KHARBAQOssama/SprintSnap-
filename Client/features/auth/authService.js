@@ -1,3 +1,4 @@
+import { toast } from "react-toastify"
 import api from "../../src/api"
 
 const register = async (userData) => {
@@ -7,8 +8,14 @@ const register = async (userData) => {
     }
     return response.data
 }
+const logout = async () =>{
+    toast("Wow so easy!", {
+      type: "info",
+    });
+}
 const authService = {
-    register
+    register,
+    logout
 }
  
 export default authService
