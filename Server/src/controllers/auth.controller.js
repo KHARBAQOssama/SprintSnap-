@@ -51,8 +51,17 @@ class AuthController {
         secure: true,
         sameSite: "Strict",
       });
-
-      return res.status(200).json({ message: "logged in" });
+      return res
+        .status(200)
+        .json({
+          user: {
+            email: existingUser.email,
+            first_name: existingUser.first_name,
+            last_name: existingUser.last_name,
+            _id: existingUser._id,
+            verified: existingUser.verified,
+          },
+        });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
