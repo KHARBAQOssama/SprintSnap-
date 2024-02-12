@@ -2,19 +2,21 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  first_name: {
     type: String,
     required: true,
   },
-  description: {
-    type: Text,
+  last_name: {
+    type: String,
     required: true,
   },
-  cover: {
+  email: {
     type: String,
+    required: true,
+    unique: true,
   },
-  from: {
-    type: date,
+  password: {
+    type: String,
     required: true,
   },
   phone_number: {
@@ -36,7 +38,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.hashPassword = async function (next) {
   const user = this;
-  if (!user.isModified("password")) return next();
+  if (!user.isModified('password')) return next();
 
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
