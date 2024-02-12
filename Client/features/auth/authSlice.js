@@ -8,6 +8,8 @@ import {
   logoutFulfilled,
   registerFulfilled,
   registerRejected,
+  resetPasswordFulfilled,
+  resetPasswordRejected,
 } from "./authCases";
 
 const initialState = {
@@ -50,21 +52,33 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   }
 });
 
-export const demandVerification = createAsyncThunk("auth/demandverification", async (user, thunkAPI) => {
-  try {
-    return await authService.demandVerification(user);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+export const demandVerification = createAsyncThunk(
+  "auth/demandverification",
+  async (user, thunkAPI) => {
+    try {
+      return await authService.demandVerification(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
   }
-});
+);
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
+
+export const resetPassword = createAsyncThunk(
+  "auth/password/reset",
+  async (data) => {
+    await authService.resetPassword(data);
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -82,7 +96,6 @@ export const authSlice = createSlice({
     builder
       .addCase(register.pending, (state) => {
         Pending(state);
-        console.log("hiii");
       })
       .addCase(register.fulfilled, (state, action) =>
         registerFulfilled(state, action)
@@ -92,15 +105,21 @@ export const authSlice = createSlice({
       )
       .addCase(login.pending, (state) => {
         Pending(state);
-        console.log("hiii");
       })
       .addCase(login.fulfilled, (state, action) =>
         loginFulfilled(state, action)
       )
       .addCase(login.rejected, (state, action) => loginRejected(state, action))
       .addCase(logout.fulfilled, (state) => logoutFulfilled(state))
-      .addCase(demandVerification.fulfilled, (state) => demandVerificationFulfilled(state))
-      ;
+      .addCase(demandVerification.fulfilled, (state) =>
+        demandVerificationFulfilled(state)
+      )
+      .addCase(resetPassword.fulfilled, (state, action) =>
+        resetPasswordFulfilled(state, action)
+      )
+      .addCase(resetPassword.rejected, (state, action) => {
+        resetPasswordRejected(state, action);
+      });
   },
 });
 

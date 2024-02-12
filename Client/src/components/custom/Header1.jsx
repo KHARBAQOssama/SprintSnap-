@@ -1,9 +1,9 @@
-
-
-const Header1 = ({children, className}) => {
+const Header1 = ({ children, className }) => {
   return (
-    <h1 className={`${className} dark:text-white text-3xl font-bold`}>{children}</h1>
-  )
-}
+    <h1 className={`${className} dark:text-white text-3xl font-medium`}>
+      {children}
+    </h1>
+  );
+};
 
-export default Header1
+export default Header1;
