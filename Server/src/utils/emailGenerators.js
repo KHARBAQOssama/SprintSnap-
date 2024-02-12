@@ -9,7 +9,6 @@ const generateEmailValidationMessage = (email) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: 600,
   });
-  console.log(token);
   const message = {
     from: `SprintSnap <sprint_snap@company.com>`,
     to: email,
@@ -30,7 +29,6 @@ const generateResetPasswordMessage = (email) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: 600,
   });
-  console.log(token);
   const message = {
     from: `SprintSnap <sprint_snap@company.com>`,
     to: email,

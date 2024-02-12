@@ -102,7 +102,7 @@ class AuthController {
 
       return res.status(200).json({ message: "password has been updated" });
     } catch (error) {
-      return res.status(500).json({ message: "internal server error" });
+      return res.status(500).json({ message: "Invalid Token" });
     }
   };
 
