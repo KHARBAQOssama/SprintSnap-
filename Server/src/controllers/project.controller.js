@@ -24,7 +24,10 @@ class ProjectController {
     try {
     } catch (error) {}
   };
-  update = async (req,res)=>{}
+  update = async (req,res)=>{
+    console.log(req.user._id , req.params.projectId);
+    return res.json('hello');
+  }
 }
 
 module.exports = ProjectController;
