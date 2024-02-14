@@ -6,10 +6,10 @@ const { projectValidation } = require("../validators");
 const { requireAuth } = require("../middlewares");
 const router = express.Router();
 
-let projectModel = new ProjectModel();
-let projectService = new ProjectService(projectModel);
+let projectService = new ProjectService(ProjectModel);
 let projectController = new ProjectController(projectService);
 
-router.post("/", projectValidation.create, projectController.create);
+router.post("/", requireAuth,projectValidation.create, projectController.create);
+router.post("/", requireAuth,projectValidation.update, projectController.update);
 
 module.exports = router;
