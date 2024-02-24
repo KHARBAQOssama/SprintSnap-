@@ -34,7 +34,7 @@ class AuthController {
         return res.status(401).json({ message: "Password is not correct" });
       }
       const payload = {
-        id: existingUser._id,
+        _id: existingUser._id,
         email: existingUser.email,
         verified: existingUser.verified,
       };
@@ -51,17 +51,15 @@ class AuthController {
         secure: true,
         sameSite: "Strict",
       });
-      return res
-        .status(200)
-        .json({
-          user: {
-            email: existingUser.email,
-            first_name: existingUser.first_name,
-            last_name: existingUser.last_name,
-            _id: existingUser._id,
-            verified: existingUser.verified,
-          },
-        });
+      return res.status(200).json({
+        user: {
+          email: existingUser.email,
+          first_name: existingUser.first_name,
+          last_name: existingUser.last_name,
+          _id: existingUser._id,
+          verified: existingUser.verified,
+        },
+      });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
