@@ -1,6 +1,8 @@
 const { validationResult } = require("express-validator");
 const emailSender = require("../utils/emailSender");
 const { generateEmailValidationMessage } = require("../utils/emailGenerators");
+const { generateRefreshToken } = require("../utils/generators");
+const jwt = require("jsonwebtoken");
 
 class UserController {
   service;
@@ -26,7 +28,24 @@ class UserController {
         email,
         password
       );
+      const payload = {
+        _id: user._id,
+        email: user.email,
+        verified: false,
+      };
 
+      const refreshToken = generateRefreshToken(user);
+      await this.service.saveRefreshToken(user._id, refreshToken);
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: 900,
+      });
+
+      res.cookie("accessToken", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+      });
       emailSender(generateEmailValidationMessage(email));
       res.status(201).json({
         message:
@@ -35,6 +54,7 @@ class UserController {
           email: user.email,
           first_name: user.first_name,
           last_name: user.last_name,
+          _id: user._id,
           verified: user.verified,
         },
       });
