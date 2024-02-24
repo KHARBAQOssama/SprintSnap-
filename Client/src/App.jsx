@@ -8,8 +8,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./views/Dashboard";
 import RequireAuthRoute from "./routes/RequireAuthRoute";
 import { isAuthenticated } from "./middlewares";
+import { useEffect } from "react";
+import api from "./api";
 
 function App() {
+  // useEffect(async () => {
+  //   let resp = await api.post('/project',{name:'p1',description:'hkfsdb',task_status:[]});
+  //   console.log(resp);
+  // }, []);
   return (
     <>
       <BrowserRouter>
@@ -21,9 +27,7 @@ function App() {
             <Route path="/auth/password/reset" element={<ResetPassword />} />
           </Route>
           <Route element={<RequireAuthRoute />}>
-            <Route path="/dashboard" element={<Dashboard />}>
-              
-            </Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
           </Route>
           {/* <RequireAuthRoute
             path="/dashboard"
