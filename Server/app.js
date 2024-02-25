@@ -1,10 +1,25 @@
 const express = require('express');
 const app = express();
+const cookieParser = require("cookie-parser");
+const routes = require('./src/routes')
+const cors = require("cors");
 
-app.get('/',(req,res)=>{
-    return res.status(400).json('hello world');
-})
+require("dotenv").config();
+require("./src/config/database.config")();
 
-app.listen(3000, ()=>{
-    console.log("running");
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
+app.use("/api", routes);
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT, ()=>{
+    console.log(`running on ${PORT}`);
 })
