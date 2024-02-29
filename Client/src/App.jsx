@@ -10,6 +10,7 @@ import RequireAuthRoute from "./routes/RequireAuthRoute";
 import { isAuthenticated } from "./middlewares";
 import { useEffect } from "react";
 import api from "./api";
+import Test from "./views/Test";
 
 function App() {
   // useEffect(async () => {
@@ -20,6 +21,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+        <Route path="/test" element={<Test/>}></Route>
           <Route path="/auth" element={<Auth />}>
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
