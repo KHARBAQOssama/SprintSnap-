@@ -21,6 +21,7 @@ const projectSchema = new mongoose.Schema({
   task_status: [{ type: String }],
   deleted: { type: Boolean, default: "false" },
   cover: { type: String },
+  icon: { type: String },
 });
 
 const Project = mongoose.model("Project", projectSchema);
