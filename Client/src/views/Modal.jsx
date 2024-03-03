@@ -3,15 +3,13 @@ import EditIcon from "../components/icons/EditIcon";
 
 const Modal = ({ open, closeModal }) => {
   const [title, setTitle] = useState("Title");
+  const [isLoading, setIsLoading] = useState(false);
   const [coverNumber, setCoverNumber] = useState(
     Math.floor(Math.random() * 140) + 1
   );
   const [iconNumber, setIconNumber] = useState(
-    Math.floor(Math.random() * 600) + 1
+    Math.floor(Math.random() * 677) + 1
   );
-  // const [projectIcon, setProjectIcon] = useState(
-  //   Math.floor(Math.random() * 600) + 1
-  // );
   const [coverPickingOn, setCoverPicking] = useState(false);
   const [iconPickingOn, setIconPicking] = useState(false);
   const covers = [];
@@ -50,7 +48,7 @@ const Modal = ({ open, closeModal }) => {
   };
   if (!open) return <></>;
   return (
-    <div className="w-[100vw] h-[100vh] absolute top-0 left-0 bg-[#7442b050] flex items-center justify-center">
+    <div className="w-[100vw] h-[100vh] overflow-scroll absolute top-0 left-0 bg-[#7442b050] flex items-center justify-center">
       <div className="shadow-2xl bg-white max-w-[750px] min-w-[320px] w-full p-6 rounded-xl relative">
         <h1 className="text-xl font-semibold">Project Creation</h1>
         <div className="py-3">
@@ -120,9 +118,22 @@ const Modal = ({ open, closeModal }) => {
               <EditIcon />
             </button>
           </div>
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <textarea
+                className="w-full bg-[#F1F1F1] p-2 rounded-lg focus:outline-none"
+                rows={4}
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div className="flex-1"></div>
+          </div>
         </div>
         <div className="flex">
-          <button className="ms-auto px-3 text-white py-1 rounded bg-[#5577FF]">
+          <button
+            className="ms-auto px-3 text-white py-1 rounded bg-[#5577FF]"
+            onClick={() => setIsLoading(true)}
+          >
             Create
           </button>
         </div>
