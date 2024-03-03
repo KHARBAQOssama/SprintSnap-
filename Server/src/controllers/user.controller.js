@@ -46,6 +46,11 @@ class UserController {
         secure: true,
         sameSite: "Strict",
       });
+      res.cookie("userId", user._id, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+      });
       emailSender(generateEmailValidationMessage(email));
       res.status(201).json({
         message:
