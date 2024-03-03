@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { demandVerification, reset } from "../../../features/auth/authSlice";
+import { demandVerification, reset } from "../../../features/auth/slice";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
