@@ -3,7 +3,7 @@ import Header1 from "../custom/Header1";
 import CustomInput from "../custom/CustomInput";
 import { generateId } from "../../utils/functions";
 import { useDispatch, useSelector } from "react-redux";
-import { login, reset } from "../../../features/auth/authSlice";
+import { login, reset } from "../../../features/auth/slice";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 

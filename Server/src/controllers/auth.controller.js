@@ -9,6 +9,10 @@ const jwt = require("jsonwebtoken");
 const { generateRefreshToken } = require("../utils/generators");
 const UserService = require("../services/user.service");
 
+
+const tokensGenerator = ()=>{
+
+}
 class AuthController {
   service;
   constructor(UserService) {
@@ -47,6 +51,11 @@ class AuthController {
       });
 
       res.cookie("accessToken", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+      });
+      res.cookie("userId", existingUser._id, {
         httpOnly: true,
         secure: true,
         sameSite: "Strict",

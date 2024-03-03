@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logout, reset } from "../../../features/auth/authSlice";
+import { logout, reset } from "../../../features/auth/slice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
