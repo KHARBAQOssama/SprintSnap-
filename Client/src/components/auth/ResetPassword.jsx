@@ -5,7 +5,7 @@ import { generateId } from "../../utils/functions";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { reset, resetPassword } from "../../../features/auth/authSlice";
+import { reset, resetPassword } from "../../../features/auth/slice";
 
 const ResetPassword = () => {
   const [credentials, setCredentials] = useState({
