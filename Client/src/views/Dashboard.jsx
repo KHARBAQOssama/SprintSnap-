@@ -4,18 +4,10 @@ import Logout from "../components/auth/Logout";
 import { useEffect, useState } from "react";
 import Logo from "../components/common/Logo";
 import api from "../api";
-import Sidebar from "../components/dashboard/Sidebar";
+import Sidebar from "../components/dashboard/sidebar/Sidebar";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
-  // useEffect(async () => {
-  //   let resp = await api.patch("/project/hdqjh", {
-  //     name: "p1",
-  //     description: "hkfsdb",
-  //     task_status: [],
-  //   });
-  //   console.log(resp);
-  // }, []);
   return (
     <section className="flex h-[100vh] w-[100vw]">
       <Sidebar />
