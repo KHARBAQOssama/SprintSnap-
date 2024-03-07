@@ -5,7 +5,6 @@ class TeamController {
   service;
   constructor(Service) {
     this.service = Service;
-    console.log(this.service);
   }
   create = async (req) => {
     const team = await this.service.create(req.user._id);
