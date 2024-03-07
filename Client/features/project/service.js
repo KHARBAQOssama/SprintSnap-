@@ -7,13 +7,13 @@ const getAll = async () => {
   return response.data.projects;
 };
 const createProject = async (data) => {
-  const response = await api.post("/project",data);
-  return response.data.projects;
+  const response = await api.post("/project", data);
+  return response.data;
 };
 
 const projectService = {
   getAll,
-  createProject
+  createProject,
 };
 
 export default projectService;
