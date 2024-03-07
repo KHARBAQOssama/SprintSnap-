@@ -3,13 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAll } from "../../../../features/project/slice";
 import PlusIcon from "../../icons/PlusIcon";
 import ProjectItem from "./ProjectItem";
+import { toast } from "react-toastify";
 
 const SidebarProjects = () => {
   const dispatch = useDispatch();
-  const { projects } = useSelector((state) => state.project);
+  const { projects, message } = useSelector((state) => state.project);
   useEffect(() => {
     dispatch(getAll());
   }, []);
+  useEffect(() => {
+    if (message) toast(message);
+  }, [message]);
   return (
     <div className="mt-3 border-t-2 pt-1">
       <div className="flex justify-between">
@@ -24,8 +28,16 @@ const SidebarProjects = () => {
         </button>
       </div>
       <ul className="py-3 flex flex-col gap-2">
-        {projects.length != 0 &&
-          projects.map((project) => <ProjectItem project={project} />)}
+        {projects.length != 0 ? (
+          projects.map((project) => <ProjectItem project={project} />)
+        ) : (
+          <div className="flex items-center flex-col ">
+            <img src="images/noProjects.jpg" className="w-[70%]" alt="" />
+            <h3 className="w-[80%] text-center font-bold text-blue-400">
+              You have No project To Work On
+            </h3>
+          </div>
+        )}
       </ul>
     </div>
   );
