@@ -2,7 +2,6 @@ class TeamService {
   model;
   constructor(Model) {
     this.model = Model;
-    console.log(this.model);
   }
   create = async (teamMemberId) => {
     try {
