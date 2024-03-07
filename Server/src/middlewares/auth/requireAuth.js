@@ -1,43 +1,53 @@
 const jwt = require("jsonwebtoken");
 const User = require("../../models/user.model");
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const accessToken = req.cookies.accessToken;
-
   if (!accessToken) {
-    return res.status(401).json({ message: "Unauthorized: Missing token" });
+    return res.status(401).json({ message: "Forbidden" });
   }
 
-  jwt.verify(accessToken, process.env.JWT_SECRET, async (err, user) => {
-    if (err) {
-      const user = await User.findById(req.cookies.userId);
-      jwt.verify(
-        user.refreshToken,
-        process.env.JWT_SECRET,
-        async (err, user) => {
-          if (err) {
-            user.refreshToken = null;
-            user.save();
-            return res
-              .status(403)
-              .json({ message: "Forbidden: Invalid token" });
-          }
-          console.log("hello");
-          const token = jwt.sign(user, process.env.JWT_SECRET, {
-            expiresIn: 900,
-          });
+  try {
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
 
-          res.cookie("accessToken", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "Strict",
-          });
-          req.user = user;
-        }
-      );
+    req.user = decoded;
+
+    return next();
+  } catch (err) {
+    const userId = req.cookies.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "Forbidden" });
     }
 
-    req.user = user;
-    next();
-  });
+    try {
+      const user = await User.findById(userId, "refreshToken");
+      if (!user || !user.refreshToken) {
+        console.log("no user found");
+        return res.status(401).json({ message: "Forbidden" });
+      }
+      const decodedRefreshToken = jwt.verify(
+        user.refreshToken,
+        process.env.JWT_REFRESH
+      );
+      req.user = decodedRefreshToken;
+      const newAccessToken = jwt.sign(
+        {
+          _id: decodedRefreshToken._id,
+          email: decodedRefreshToken.email,
+          verified: user.verified,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "15m" }
+      );
+      res.cookie("accessToken", newAccessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+      });
+      return next();
+    } catch (err) {
+      console.log(err);
+      return res.status(401).json({ message: "Forbidden", err });
+    }
+  }
 };
