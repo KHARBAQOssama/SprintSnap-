@@ -200,8 +200,8 @@ const Test = () => {
             </div>
           </div>
         </div>
-      </main>
-      <div className="flex-1 bg-white border-l p-6">
+      </main> */}
+      {/* <div className="flex-1 bg-white border-l p-6">
         <div className="flex gap-2 items-center pb-2 border-b-2">
           <Category color={"#56555C"} />
           <h3 className="text-xl">Todos</h3>
@@ -227,13 +227,13 @@ const Test = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>*/}
       <Modal
         open={open}
         closeModal={() => {
           setOpen(!open);
         }}
-      /> */}
+      />
       <main className="min-w-[60em] flex-1 h-[100vh] bg-white">
         <Board />
       </main>
