@@ -16,6 +16,7 @@ const initialState = {
   user: localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
     : null,
+  isAuthenticated: localStorage.getItem("user") ? true : false,
   isError: false,
   isSuccess: false,
   logoutSuccess: false,
@@ -80,6 +81,11 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+export const unauthorized = createAsyncThunk("auth/unauthorized", async () => {
+
+  return true;
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -90,6 +96,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = false;
       state.logoutSuccess = false;
+      state.isAuthenticated = false;
     },
   },
   extraReducers: (builder) => {
@@ -119,6 +126,10 @@ export const authSlice = createSlice({
       )
       .addCase(resetPassword.rejected, (state, action) => {
         resetPasswordRejected(state, action);
+      })
+      .addCase(unauthorized.fulfilled, (state, action) => {
+        localStorage.removeItem("user");
+        reset();
       });
   },
 });
