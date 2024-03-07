@@ -1,17 +1,19 @@
+import { useDispatch } from "react-redux";
 import api from "../../src/api";
+import { unauthorized } from "../auth/slice";
 
 const getAll = async () => {
-  try {
-    const response = await api.get("/project");
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    throw new Error(error);
-  }
+  const response = await api.get("/project");
+  return response.data.projects;
+};
+const createProject = async (data) => {
+  const response = await api.post("/project",data);
+  return response.data.projects;
 };
 
 const projectService = {
   getAll,
+  createProject
 };
 
 export default projectService;
