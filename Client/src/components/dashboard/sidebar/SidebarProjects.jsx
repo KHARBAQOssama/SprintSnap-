@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAll, reset } from "../../../../features/project/slice";
+import { getAll,reset } from "../../../../features/project/slice";
 import PlusIcon from "../../icons/PlusIcon";
 import ProjectItem from "./ProjectItem";
 import { toast } from "react-toastify";
