@@ -9,10 +9,7 @@ const jwt = require("jsonwebtoken");
 const { generateRefreshToken } = require("../utils/generators");
 const UserService = require("../services/user.service");
 
-
-const tokensGenerator = ()=>{
-
-}
+const tokensGenerator = () => {};
 class AuthController {
   service;
   constructor(UserService) {
@@ -28,14 +25,14 @@ class AuthController {
     try {
       const existingUser = await this.service.getUserByEmail(email);
       if (!existingUser)
-        return res.status(401).json({ message: "The email is incorrect!" });
+        return res.status(400).json({ message: "The email is incorrect!" });
       const passwordMatch = await bcrypt.compare(
         password,
         existingUser.password
       );
 
       if (!passwordMatch) {
-        return res.status(401).json({ message: "Password is not correct" });
+        return res.status(400).json({ message: "Password is not correct" });
       }
       const payload = {
         _id: existingUser._id,
@@ -47,7 +44,7 @@ class AuthController {
       await this.service.saveRefreshToken(existingUser._id, refreshToken);
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: 900,
+        expiresIn: "15m",
       });
 
       res.cookie("accessToken", token, {
@@ -59,6 +56,7 @@ class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: "Strict",
+        maxAge: 604800000,
       });
       return res.status(200).json({
         user: {
@@ -89,7 +87,7 @@ class AuthController {
     try {
       const existingUser = await this.service.getUserByEmail(email);
       if (!existingUser)
-        return res.status(401).json({ message: "The email is incorrect!" });
+        return res.status(400).json({ message: "The email is incorrect!" });
 
       emailSender(generateResetPasswordMessage(email));
 

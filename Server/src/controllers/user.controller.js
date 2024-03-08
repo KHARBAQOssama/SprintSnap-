@@ -50,6 +50,7 @@ class UserController {
         httpOnly: true,
         secure: true,
         sameSite: "Strict",
+        maxAge: 604800000,
       });
       emailSender(generateEmailValidationMessage(email));
       res.status(201).json({

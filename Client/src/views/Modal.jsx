@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import EditIcon from "../components/icons/EditIcon";
 
 const Modal = ({ open, closeModal }) => {
+  const [taskStatus, setTaskStatus] = useState([
+    "TO DO",
+    "IN PROGRESS",
+    "DONE",
+  ]);
+  const [adding, setAdding] = useState(false);
   const [title, setTitle] = useState("Title");
+  const [newStatus, setNewStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [coverNumber, setCoverNumber] = useState(
     Math.floor(Math.random() * 140) + 1
@@ -77,10 +84,10 @@ const Modal = ({ open, closeModal }) => {
                   <div className="flex justify-between items-center">
                     <span>choosing an icon</span>
                     <button
-                      className="px-1 rounded-full bg-black text-white"
+                      className="px-1 rounded-full text-gray-400"
                       onClick={() => setIconPicking(false)}
                     >
-                      x
+                      close
                     </button>
                   </div>
                   <div className="max-h-48 flex flex-wrap gap-2 overflow-scroll">
@@ -100,10 +107,10 @@ const Modal = ({ open, closeModal }) => {
                 <div className="flex justify-between items-center">
                   <span>choosing a cover</span>
                   <button
-                    className="px-1 rounded-full bg-black text-white"
+                    className="px-1 rounded-full text-gray-400"
                     onClick={() => setCoverPicking(false)}
                   >
-                    x
+                    close
                   </button>
                 </div>
                 <div className="flex flex-col max-h-[160px] overflow-scroll gap-2">
@@ -118,15 +125,65 @@ const Modal = ({ open, closeModal }) => {
               <EditIcon />
             </button>
           </div>
-          <div className="flex gap-2">
-            <div className="flex-1">
+          <div className="flex gap-2 py-3">
+            <div className="flex-1 flex flex-col gap-2">
+              <span>Description</span>
               <textarea
-                className="w-full bg-[#F1F1F1] p-2 rounded-lg focus:outline-none"
+                className="w-full bg-[#F1F1F1] p-2 rounded-lg flex-1 focus:outline-none"
                 rows={4}
-                placeholder="Description"
+                // placeholder="Description"
               ></textarea>
             </div>
-            <div className="flex-1"></div>
+            <div className="flex-1 flex flex-col gap-2">
+              <span>Task Status</span>
+              <div className="flex flex-col gap-1">
+                {taskStatus.map((status) => (
+                  <div
+                    className="px-3 rounded border-2 border-green-400 text-green-600 bg-green-100 py-1 flex justify-between items-center"
+                    draggable="true"
+                  >
+                    <span>{status}</span>
+                    <button
+                      className="font-bold"
+                      onClick={() =>
+                        setTaskStatus(taskStatus.filter((s) => s != status))
+                      }
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+                {adding && (
+                  <div className="relative flex-1">
+                    <input
+                      placeholder="new status"
+                      value={newStatus}
+                      onChange={(e) => setNewStatus(e.target.value)}
+                      className="w-full focus:outline-none p-2 border rounded"
+                    />
+                    <button
+                      className="absolute top-[50%] translate-y-[-50%] right-1 p-1 px-2 rounded bg-[#5577FF] text-white"
+                      onClick={() => {
+                        if (newStatus) {
+                          setTaskStatus([...taskStatus, newStatus]);
+                          setNewStatus("");
+                        }
+                      }}
+                    >
+                      {"->"}
+                    </button>
+                  </div>
+                )}
+                {!adding && (
+                  <button
+                    className="px-3 rounded py-1 w-max ms-auto"
+                    onClick={() => setAdding(!adding)}
+                  >
+                    + add
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex">

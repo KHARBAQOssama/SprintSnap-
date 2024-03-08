@@ -4,39 +4,50 @@ import Register from "./components/auth/Register";
 import ResetPassword from "./components/auth/ResetPassword";
 import ForgetPassword from "./components/auth/forgetPassword";
 import Auth from "./views/Auth";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Dashboard from "./views/Dashboard";
 import RequireAuthRoute from "./routes/RequireAuthRoute";
-import { isAuthenticated } from "./middlewares";
 import { useEffect } from "react";
-import api from "./api";
 import Test from "./views/Test";
+import { useDispatch, useSelector } from "react-redux";
+import { unauthorized } from "../features/auth/slice";
+import Activities from "./components/dashboard/activities";
+import Projects from "./components/dashboard/projects";
+import Analytics from "./components/dashboard/analytics";
+import Overview from "./components/dashboard/overview";
 
 function App() {
-  // useEffect(async () => {
-  //   let resp = await api.post('/project',{name:'p1',description:'hkfsdb',task_status:[]});
-  //   console.log(resp);
-  // }, []);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status: projectsStatus } = useSelector((state) => state.project);
+  useEffect(() => {
+    if (projectsStatus == 401) {
+      dispatch(unauthorized());
+      navigate("/auth/login");
+    }
+  }, [projectsStatus]);
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-        <Route path="/test" element={<Test/>}></Route>
-          <Route path="/auth" element={<Auth />}>
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/password/forget" element={<ForgetPassword />} />
-            <Route path="/auth/password/reset" element={<ResetPassword />} />
+      <Routes>
+        <Route path="/test" element={<Test />}></Route>
+        <Route path="/auth" element={<Auth />}>
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/password/forget" element={<ForgetPassword />} />
+          <Route path="/auth/password/reset" element={<ResetPassword />} />
+        </Route>
+        <Route element={<RequireAuthRoute />}>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="/dashboard" element={<Overview/>}></Route>
+            <Route
+              path="/dashboard/activities"
+              element={<Activities />}
+            ></Route>
+            <Route path="/dashboard/projects" element={<Projects />}></Route>
+            <Route path="/dashboard/analytics" element={<Analytics />}></Route>
           </Route>
-          <Route element={<RequireAuthRoute />}>
-            <Route path="/dashboard" element={<Dashboard />}></Route>
-          </Route>
-          {/* <RequireAuthRoute
-            path="/dashboard"
-            component={<Dashboard />}
-          ></RequireAuthRoute> */}
-        </Routes>
-      </BrowserRouter>
+        </Route>
+      </Routes>
     </>
   );
 }

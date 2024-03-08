@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import projectService from "./service";
-import { Pending, getAllFulfilled, getAllRejected } from "./cases";
+import { Pending, createProjectFulfilled, createProjectRejected, getAllFulfilled, getAllRejected } from "./cases";
+
 
 const initialState = {
   projects: [],
@@ -8,19 +9,31 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: "",
+  status: null,
 };
 
-export const getAll = createAsyncThunk("project/getAll", async () => {
-  try {
-    return await projectService.getAll();
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+export const getAll = createAsyncThunk(
+  "project/getAll",
+  async (a = null, thunkAPI) => {
+    try {
+      const response = await projectService.getAll();
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
   }
-});
+);
+export const createProject = createAsyncThunk(
+  "project/createProject",
+  async (data, thunkAPI) => {
+    try {
+      const response = await projectService.createProject(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
 
 export const projectSlice = createSlice({
   name: "project",
@@ -31,6 +44,7 @@ export const projectSlice = createSlice({
       state.isError = false;
       state.isLoading = false;
       state.isSuccess = false;
+      state.status = null;
     },
   },
   extraReducers: (builder) => {
@@ -42,8 +56,16 @@ export const projectSlice = createSlice({
         getAllFulfilled(state, action);
       })
       .addCase(getAll.rejected, (state, action) => {
-        console.log(action);
         getAllRejected(state, action);
+      })
+      .addCase(createProject.pending, (state) => {
+        Pending(state);
+      })
+      .addCase(createProject.fulfilled, (state, action) => {
+        createProjectFulfilled(state, action);
+      })
+      .addCase(createProject.rejected, (state, action) => {
+        createProjectRejected(state, action);
       });
   },
 });
