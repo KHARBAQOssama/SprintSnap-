@@ -13,6 +13,7 @@ import ProfileIcon from "../components/icons/ProfileIcon";
 import CheckedBoxIcon from "../components/icons/CheckedBoxIcon";
 import Modal from "./Modal";
 import { motion } from "framer-motion";
+import { randomColorGenerator } from "../utils/functions";
 
 const Test = () => {
   const [open, setOpen] = useState();
@@ -96,11 +97,14 @@ const Test = () => {
           </div>
         </div>
       </aside>
-      {/* <main className="min-w-[60em]">
+      <main className="min-w-[60em]">
         <div className="bg-white p-6 border-b">
           <div className="flex gap-2 items-baseline">
             <div className="flex gap-2 items-center">
-              <div className="h-4 w-4 rounded bg-green-600"></div>
+              <div
+                className={`h-4 w-4 rounded `}
+                style={{ backgroundColor: randomColorGenerator() }}
+              ></div>
               <span className="font-semibold text-xl ">Cloth</span>
             </div>
             <button className="ms-auto">
@@ -200,8 +204,8 @@ const Test = () => {
             </div>
           </div>
         </div>
-      </main> */}
-      {/* <div className="flex-1 bg-white border-l p-6">
+      </main>
+      <div className="flex-1 bg-white border-l p-6">
         <div className="flex gap-2 items-center pb-2 border-b-2">
           <Category color={"#56555C"} />
           <h3 className="text-xl">Todos</h3>
@@ -227,16 +231,16 @@ const Test = () => {
             </div>
           </div>
         </div>
-      </div>*/}
+      </div>
       <Modal
         open={open}
         closeModal={() => {
           setOpen(!open);
         }}
       />
-      <main className="min-w-[60em] flex-1 h-[100vh] bg-white">
+      {/* <main className="min-w-[60em] flex-1 h-[100vh] bg-white">
         <Board />
-      </main>
+      </main> */}
     </div>
   );
 };
