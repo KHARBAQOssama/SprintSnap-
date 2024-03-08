@@ -15,7 +15,7 @@ class ProjectService {
         {
           $or: [{ owner: ownerId }, { team: { $in: teamIds } }],
         },
-        "name icon"
+        "name icon description"
       );
 
       return projects;
