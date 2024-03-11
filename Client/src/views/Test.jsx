@@ -238,9 +238,9 @@ const Test = () => {
           setOpen(!open);
         }}
       />
-      {/* <main className="min-w-[60em] flex-1 h-[100vh] bg-white">
+      <main className="min-w-[60em] flex-1 h-[100vh] bg-white">
         <Board />
-      </main> */}
+      </main>
     </div>
   );
 };
