@@ -1,7 +1,7 @@
-const Projects = () => {
-  return (
-    <div>Projects</div>
-  )
-}
+import { Outlet } from "react-router-dom";
 
-export default Projects
+const Projects = () => {
+  return <Outlet />;
+};
+
+export default Projects;
