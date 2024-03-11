@@ -1,10 +1,18 @@
 import { useSelector } from "react-redux";
 import FoldersIcon from "../../icons/FoldersIcon";
+import CheckedBoxIcon from "../../icons/CheckedBoxIcon";
+import UncheckedBox from "../../icons/UncheckedBox";
+import { useNavigate } from "react-router-dom";
 
 const Overview = () => {
   const teams = [1, 2, 3, 4, 5];
   const { user } = useSelector((state) => state.auth);
   const { projects } = useSelector((state) => state.project);
+  const navigate = useNavigate();
+  const handleClick = (_id) => {
+    console.log(_id);
+    navigate(`/dashboard/projects/${_id}`);
+  };
   return (
     <div className="w-full h-full overflow-y-scroll flex flex-col gap-4 ">
       <div>
@@ -66,24 +74,31 @@ const Overview = () => {
         </div>
         <div className="py-3 flex gap-3 flex-wrap">
           {projects.map((project) => (
-            <div className="p-4 min-w-max flex-1 flex flex-col gap-3 border bg-white shadow-xl shadow-gray-100 rounded-xl">
-              <div className="flex gap-3">
+            <div
+              className="p-4 flex-1 flex flex-col gap-3 border bg-white shadow-xl shadow-gray-100 max-w-[280px] hover:shadow-green-200 cursor-pointer"
+              onClick={() => handleClick(project._id)}
+            >
+              <div className="flex gap-3 item">
                 <img src={project.icon} className="w-8 h-8" alt="" />
-                <span className="text-lg font-semibold">{project.name}</span>
+                <span className="text-lg font-semibold  w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
+                  {project.name}
+                </span>
               </div>
-              <p className="text-sm text-gray-500">{project.description}</p>
-              <div className="flex relative h-4">
-                {teams.map((team, index) => (
+              <p className="text-sm text-gray-500 w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
+                {project.description}
+              </p>
+              <div className="flex relative h-4 mt-auto">
+                {project.team.members.map((member, index) => (
                   <div
-                    className={`w-[25px] absolute`}
+                    className={`w-[25px] absolute rounded-full overflow-hidden`}
                     style={{
-                      left: `${index * 15}px`,
-                      zIndex: `${index * -1}px`,
+                      left: `${index * 10}px`,
+                      zIndex: teams.length - index,
                     }}
                   >
                     <img
                       className="w-full"
-                      src="/images/logos/projectIcon1.png"
+                      src={member.image_url || "/icons/defaultProfile.png"}
                       alt=""
                     />
                   </div>
@@ -91,6 +106,156 @@ const Overview = () => {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+      <section className="max-h-[80vh] flex flex-col gap-4 text-sm">
+        <div className="flex items-center justify-between w-full">
+          <h2 className="text-lg font-semibold">Activities</h2>
+          <span className="text-sm text-gray-400 cursor-pointer hover:text-blue-500">
+            View All
+          </span>
+        </div>
+        <div className="overflow-y-scroll flex-1 flex flex-col gap-1">
+          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
+            <div>
+              {false ? (
+                <CheckedBoxIcon className={"h-5 w-5"} />
+              ) : (
+                <UncheckedBox className={"h-5 w-5"} />
+              )}
+            </div>
+            <div className="relative">
+              <div
+                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon12.png')`,
+                }}
+              ></div>
+              <div
+                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon22.png')`,
+                }}
+              ></div>
+            </div>
+            <div className="">
+              <p className="text-gray-500">
+                <span
+                  className="text-black font-semibold
+              "
+                >
+                  Ossama Kharbaq
+                </span>{" "}
+                has change the task status of a task from to do to in progress
+              </p>
+              <p className="text-gray-400 font-light">today at 12:00 pm </p>
+            </div>
+          </div>
+          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
+            <div>
+              {true ? (
+                <CheckedBoxIcon className={"h-5 w-5"} />
+              ) : (
+                <UncheckedBox className={"h-5 w-5"} />
+              )}
+            </div>
+            <div className="relative">
+              <div
+                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon18.png')`,
+                }}
+              ></div>
+              <div
+                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon134.png')`,
+                }}
+              ></div>
+            </div>
+            <div className="">
+              <p className="text-gray-500">
+                <span
+                  className="text-black font-semibold
+              "
+                >
+                  Ossama Kharbaq
+                </span>{" "}
+                has change the task status of a task from to do to in progress
+              </p>
+              <p className="text-gray-400 font-light">today at 12:00 pm </p>
+            </div>
+          </div>
+          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
+            <div>
+              {true ? (
+                <CheckedBoxIcon className={"h-5 w-5"} />
+              ) : (
+                <UncheckedBox className={"h-5 w-5"} />
+              )}
+            </div>
+            <div className="relative">
+              <div
+                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon94.png')`,
+                }}
+              ></div>
+              <div
+                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon90.png')`,
+                }}
+              ></div>
+            </div>
+            <div className="">
+              <p className="text-gray-500">
+                <span
+                  className="text-black font-semibold
+              "
+                >
+                  Ossama Kharbaq
+                </span>{" "}
+                has change the task status of a task from to do to in progress
+              </p>
+              <p className="text-gray-400 font-light">today at 12:00 pm </p>
+            </div>
+          </div>
+          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
+            <div>
+              {true ? (
+                <CheckedBoxIcon className={"h-5 w-5"} />
+              ) : (
+                <UncheckedBox className={"h-5 w-5"} />
+              )}
+            </div>
+            <div className="relative">
+              <div
+                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon93.png')`,
+                }}
+              ></div>
+              <div
+                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
+                style={{
+                  backgroundImage: `url('/images/logos/projectIcon173.png')`,
+                }}
+              ></div>
+            </div>
+            <div className="">
+              <p className="text-gray-500">
+                <span
+                  className="text-black font-semibold
+              "
+                >
+                  Ossama Kharbaq
+                </span>{" "}
+                has change the task status of a task from to do to in progress
+              </p>
+              <p className="text-gray-400 font-light">today at 12:00 pm </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
