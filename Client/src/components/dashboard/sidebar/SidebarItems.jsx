@@ -9,7 +9,6 @@ import SidebarItem from "./SidebarItem";
 const SidebarItems = () => {
   const location = useLocation();
   const pathname = location.pathname;
-  console.log(location.pathname);
 
   return (
     <ul className="">
