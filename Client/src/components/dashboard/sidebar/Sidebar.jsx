@@ -44,16 +44,16 @@ const Sidebar = () => {
         <SidebarItems />
       </div>
       <SidebarProjects />
-      <div className="border rounded-lg p-1 flex gap-3 mt-auto">
-        <div className="relative">
-          <img className="h-10" src="/icons/defaultProfile.png" alt="" />
-          <div className="h-2 w-2 bg-green-600 rounded-sm absolute top-8 left-8 border border-white"></div>
+      <div className="border rounded-xl flex gap-2 mt-auto overflow-hidden items-center">
+        <div className="relative h-full">
+          <img className="h-full" src="/icons/defaultProfile.png" alt="" />
         </div>
-        <div>
-          {user && (
-            <span className=" font-light text-sm">{`${user.first_name} ${user.last_name}`}</span>
-          )}
-        </div>
+        {user && (
+          <div className="flex flex-col py-2">
+            <span className=" font-medium text-gray-500 text-sm">{`${user.first_name} ${user.last_name}`}</span>
+            <span className="text-gray-400 text-xs font-light w-[15ch] overflow-hidden whitespace-nowrap text-ellipsis">{`${user.email}`}</span>
+          </div>
+        )}
       </div>
     </aside>
   );

@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import projectService from "./service";
-import { Pending, getAllFulfilled, getAllRejected } from "./cases";
-import { useDispatch } from "react-redux";
+import { Pending, createProjectFulfilled, createProjectRejected, getAllFulfilled, getAllRejected, getProjectFulfilled, getProjectRejected } from "./cases";
+
 
 const initialState = {
   projects: [],
+  activeProject : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -28,6 +29,17 @@ export const createProject = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await projectService.createProject(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+export const getProject = createAsyncThunk(
+  "project/getProject",
+  async (data, thunkAPI) => {
+    try {
+      const response = await projectService.getProject(data);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -66,6 +78,12 @@ export const projectSlice = createSlice({
       })
       .addCase(createProject.rejected, (state, action) => {
         createProjectRejected(state, action);
+      })
+      .addCase(getProject.fulfilled, (state, action) => {
+        getProjectFulfilled(state, action);
+      })
+      .addCase(getProject.rejected, (state, action) => {
+        getProjectRejected(state, action);
       });
   },
 });

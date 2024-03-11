@@ -18,6 +18,11 @@ router.post(
   projectController.create
 );
 
+router.get(
+  "/:id",
+  requireAuth,
+  projectController.getOne
+);
 router.patch(
   "/:projectId",
   requireAuth,

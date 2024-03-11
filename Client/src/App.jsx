@@ -11,6 +11,12 @@ import { useEffect } from "react";
 import Test from "./views/Test";
 import { useDispatch, useSelector } from "react-redux";
 import { unauthorized } from "../features/auth/slice";
+import Activities from "./components/dashboard/activities";
+import Projects from "./components/dashboard/projects";
+import Analytics from "./components/dashboard/analytics";
+import Overview from "./components/dashboard/overview";
+import AllProjects from "./components/dashboard/projects/AllProjects";
+import SingleProject from "./components/dashboard/projects/SingleProject";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,7 +39,18 @@ function App() {
           <Route path="/auth/password/reset" element={<ResetPassword />} />
         </Route>
         <Route element={<RequireAuthRoute />}>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="/dashboard" element={<Overview/>}></Route>
+            <Route
+              path="/dashboard/activities"
+              element={<Activities />}
+            ></Route>
+            <Route path="/dashboard/projects" element={<Projects />}>
+              <Route path="/dashboard/projects" element={<AllProjects />}></Route>
+              <Route path="/dashboard/projects/:id" element={<SingleProject />}></Route>
+            </Route>
+            <Route path="/dashboard/analytics" element={<Analytics />}></Route>
+          </Route>
         </Route>
       </Routes>
     </>
