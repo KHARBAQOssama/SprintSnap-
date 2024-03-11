@@ -10,10 +10,15 @@ const createProject = async (data) => {
   const response = await api.post("/project", data);
   return response.data;
 };
+const getProject = async (data) => {
+  const response = await api.get(`/project/${data}`, data);
+  return response.data;
+};
 
 const projectService = {
   getAll,
   createProject,
+  getProject
 };
 
 export default projectService;
