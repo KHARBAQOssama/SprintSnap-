@@ -73,39 +73,43 @@ const Overview = () => {
           </span>
         </div>
         <div className="py-3 flex gap-3 flex-wrap">
-          {projects.map((project) => (
-            <div
-              className="p-4 flex-1 flex flex-col gap-3 border bg-white shadow-xl shadow-gray-100 max-w-[280px] hover:shadow-green-200 cursor-pointer"
-              onClick={() => handleClick(project._id)}
-            >
-              <div className="flex gap-3 item">
-                <img src={project.icon} className="w-8 h-8" alt="" />
-                <span className="text-lg font-semibold  w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
-                  {project.name}
-                </span>
+          {projects.map((project, index) =>
+            index < 3 ? (
+              <div
+                className="p-4 flex-1 flex flex-col gap-3 border bg-white shadow-xl shadow-gray-100 max-w-[300px] hover:shadow-green-200 cursor-pointer"
+                onClick={() => handleClick(project._id)}
+              >
+                <div className="flex gap-3 item">
+                  <img src={project.icon} className="w-8 h-8" alt="" />
+                  <span className="text-lg font-semibold  w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
+                    {project.name}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-500 w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
+                  {project.description}
+                </p>
+                <div className="flex relative h-4 mt-auto">
+                  {project.team.members.map((member, index) => (
+                    <div
+                      className={`w-[25px] absolute rounded-full overflow-hidden`}
+                      style={{
+                        left: `${index * 10}px`,
+                        zIndex: teams.length - index,
+                      }}
+                    >
+                      <img
+                        className="w-full"
+                        src={member.image_url || "/icons/defaultProfile.png"}
+                        alt=""
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-              <p className="text-sm text-gray-500 w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
-                {project.description}
-              </p>
-              <div className="flex relative h-4 mt-auto">
-                {project.team.members.map((member, index) => (
-                  <div
-                    className={`w-[25px] absolute rounded-full overflow-hidden`}
-                    style={{
-                      left: `${index * 10}px`,
-                      zIndex: teams.length - index,
-                    }}
-                  >
-                    <img
-                      className="w-full"
-                      src={member.image_url || "/icons/defaultProfile.png"}
-                      alt=""
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            ) : (
+              <></>
+            )
+          )}
         </div>
       </section>
       <section className="max-h-[80vh] flex flex-col gap-4 text-sm">
