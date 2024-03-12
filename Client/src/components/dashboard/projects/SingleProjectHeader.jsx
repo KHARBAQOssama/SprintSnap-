@@ -8,6 +8,7 @@ import ProfileIcon from "../../icons/ProfileIcon";
 import ProgressIcon from "../../icons/ProgressIcon";
 import TimeIcon from "../../icons/TimeIcon";
 import api from "../../../api";
+import { useSelector } from "react-redux";
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const TopHead = ({ project }) => {
   return (
@@ -68,10 +69,18 @@ const Cover = ({ project }) => {
     </div>
   );
 };
-const AddTeammateModal = ({ open, project }) => {
+const AddTeammateModal = ({ open, project, toggleForm }) => {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [invited, setInvited] = useState([]);
+  const [invitation, setInvitation] = useState({
+    role: "Contributor",
+    user: null,
+    project: project._id,
+  });
+  const { user: sender } = useSelector((state) => state.auth);
+  const roles = ["Administrator", "Lead", "Contributor", "Viewer"];
+  const [activeRole, setActiveRole] = useState("Contributor");
   const fetchUser = async () => {
     console.log(email);
     try {
@@ -84,26 +93,48 @@ const AddTeammateModal = ({ open, project }) => {
       console.log(error);
     }
   };
-  const invite = (id)=>{
-    setInvited([...invited, id]);
-  }
+  const invite = async (user) => {
+    const data = { ...invitation, user, sender };
+    try {
+      const response = await api.post("/invitation", data);
+      setInvited([...invited, user._id]);
+    } catch (error) {}
+  };
   useEffect(() => {
     if (emailPattern.test(email)) fetchUser();
     else setUser(null);
   }, [email]);
+  const userUnInvited = () => {
+    return !(
+      invited.includes(user._id) ||
+      project.invitations.some((invitation) => invitation.user == user._id)
+    );
+  };
+
+  useEffect(() => {
+    // if (user) {
+    //   if (
+    //     project.invitations.some((invitation) => invitation.user == user._id)
+    //   ) {
+    //     setInvited([...invited, user._id]);
+    //   }
+    // }
+  }, [user]);
 
   return open ? (
     <>
       <div className="absolute w-max bg-white p-2 shadow-lg shadow-green-100 rounded flex flex-col gap-2">
         <div className="text-gray-400 flex justify-between items-center">
           <h1 className="text-sm text-gray-400">Invite new Member</h1>
-          <span>x</span>
+          <span onClick={toggleForm} className="font-bold cursor-pointer">
+            x
+          </span>
         </div>
 
         <div>
           <input
             type="email"
-            className="border outline-none p-1 rounded"
+            className="border outline-none p-1 rounded w-full"
             placeholder="search by email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -124,14 +155,40 @@ const AddTeammateModal = ({ open, project }) => {
                 </span>
                 <span className="text-xs text-gray-400">{user.email}</span>
               </div>
-              {invited.includes(user._id) ? (
+              <div className="px-2">
+                {userUnInvited() ? (
+                  <select
+                    className="bg-gray-200 p-1 rounded-lg"
+                    value={invitation.role}
+                    onChange={(e) => {
+                      setInvitation({ ...invitation, role: e.target.value });
+                    }}
+                    name=""
+                    id=""
+                  >
+                    {roles.map((role) => (
+                      <option value={role} key={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <></>
+                )}
+              </div>
+              {userUnInvited() ? (
+                <button
+                  onClick={() => {
+                    invite(user);
+                  }}
+                  className="bg-gray-200 text-gray-600 text-xs py-1 rounded ms-auto px-3"
+                >
+                  invite
+                </button>
+              ) : (
                 <p className="bg-green-200 text-green-600 text-xs py-1 rounded ms-auto px-3">
                   invited
                 </p>
-              ) : (
-                <button onClick={()=>invite(user._id)} className="bg-gray-200 text-gray-600 text-xs py-1 rounded ms-auto px-3">
-                  invite
-                </button>
               )}
             </div>
           )}
@@ -149,7 +206,34 @@ const AddTeammateModal = ({ open, project }) => {
     <></>
   );
 };
+const InviteButton = ({ inviteFormOpen, toggleForm, project }) => {
+  return (
+    <div
+      className={`w-[20px] h-[20px] absolute top-[50%] translate-y-[-50%] hover:z-50`}
+      style={{
+        left: `${project.team.members.length * 10 + 25}px`,
+        zIndex: 10,
+      }}
+    >
+      <button className="w-full h-full" onClick={toggleForm}>
+        <PlusIcon className="w-full h-full" />
+      </button>
+
+      <div className="relative">
+        <AddTeammateModal
+          project={project}
+          open={inviteFormOpen}
+          toggleForm={toggleForm}
+        />
+      </div>
+    </div>
+  );
+};
+
 const ProjectInfo = ({ project }) => {
+  const [inviteFormOpen, setInviteFormOpen] = useState(false);
+  // const { user } = useSelector((state) => state.user);
+  const toggleForm = () => setInviteFormOpen(!inviteFormOpen);
   return (
     <div className="flex gap-4 py-3 px-2">
       <div className="flex-1 flex flex-col gap-3">
@@ -197,18 +281,11 @@ const ProjectInfo = ({ project }) => {
                 />
               </div>
             ))}
-            <div
-              className={`w-[20px] h-[20px] absolute top-[50%] translate-y-[-50%] hover:z-50`}
-              style={{
-                left: `${project.team.members.length * 10 + 25}px`,
-                zIndex: 10,
-              }}
-            >
-              <PlusIcon className="w-full h-full" />
-              <div className="relative">
-                <AddTeammateModal open={true} />
-              </div>
-            </div>
+            <InviteButton
+              inviteFormOpen={inviteFormOpen}
+              project={project}
+              toggleForm={toggleForm}
+            />
           </div>
         </div>
         <div className="flex gap-2 items-center">
