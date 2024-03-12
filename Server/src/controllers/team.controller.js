@@ -8,10 +8,13 @@ class TeamController {
   }
   create = async (req) => {
     const team = await this.service.create(req.user._id);
-    return team ;
+    return team;
+  };
+  inviteToCollaboration = async (req, res) => {
+    
   };
 }
 const service = new TeamService(Team);
 const teamControllerInstance = new TeamController(service);
 
-module.exports = teamControllerInstance
+module.exports = teamControllerInstance;
