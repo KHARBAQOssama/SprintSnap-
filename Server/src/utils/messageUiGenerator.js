@@ -1,4 +1,4 @@
-const generateEmailUi = (subject, url) => {
+const generateEmailUi = (subject, url, sender = null) => {
   let buttonContent = "";
   let message;
   switch (subject) {
@@ -14,6 +14,10 @@ const generateEmailUi = (subject, url) => {
         Thank you for initiating the password reset process for your
         <span style="font-weight: 600; color:rgb(115, 115, 255) ;">SprintSnap</span> account! To proceed with resetting your password, please click the button below`;
       buttonContent = "reset your password";
+      break;
+    case "invitation collaborative":
+      message = `You've received an invitation from ${sender.first_name} ${sender.last_name} to collaborate on a project with <span style="font-weight: 600; color:rgb(115, 115, 255) ;">SprintSnap</span>! Your expertise is valued, and we'd love to have you on board. To join the project and start collaborating, simply click the button below.`;
+      buttonContent = "Accept Invitation";
       break;
     default:
       break;
