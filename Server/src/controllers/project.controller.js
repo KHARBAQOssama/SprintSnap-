@@ -1,6 +1,8 @@
 const { validationResult } = require("express-validator");
 const teamControllerInstance = require("./team.controller");
 const { default: mongoose } = require("mongoose");
+const InvitationService = require("../services/invitation.service");
+const Invitation = require("../models/invitation.model");
 
 class ProjectController {
   service;
@@ -15,7 +17,11 @@ class ProjectController {
   };
   getOne = async (req, res) => {
     try {
-      const project = await this.service.getOne(req.params.id);
+      let project = await this.service.getOne(req.params.id);
+      const invitationService = new InvitationService(Invitation);
+      const invitations = await invitationService.getByProject(project._id);
+
+      project = { ...project._doc, invitations };
       return res.status(201).json({ project });
     } catch (error) {
       console.log(error);
