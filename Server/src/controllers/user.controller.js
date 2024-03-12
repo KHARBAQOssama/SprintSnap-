@@ -70,7 +70,6 @@ class UserController {
     }
   };
   getByEmail = async (req, res) => {
-    console.log(req.params);
     const result = await this.service.getUserByEmail(req.params.email);
     if (result) {
       delete result.password;
