@@ -3,10 +3,12 @@ const invitationControllerInstance = require("../controllers/invitation.controll
 const { requireAuth } = require("../middlewares");
 const router = express.Router();
 
+router.post("/", requireAuth, invitationControllerInstance.create);
+router.get("/:invitation", requireAuth, invitationControllerInstance.getOne);
 router.post(
-  "/",
+  "/:invitation/confirm",
   requireAuth,
-  invitationControllerInstance.create
+  invitationControllerInstance.confirm
 );
 
 module.exports = router;
