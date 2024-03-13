@@ -10,8 +10,9 @@ class TeamController {
     const team = await this.service.create(req.user._id);
     return team;
   };
-  inviteToCollaboration = async (req, res) => {
-    
+  insertOne = async (teamId, userId) => {
+    const team = await this.service.insertOne(teamId, userId);
+    return team;
   };
 }
 const service = new TeamService(Team);
