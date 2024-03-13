@@ -1,12 +1,10 @@
-const Logo = ({ containerClass, classItems }) => {
+const Logo = ({  className }) => {
   return (
-    <div className={`${containerClass} flex w-max gap-2 items-center`}>
-      <img
-        className={`${classItems} w-max`}
-        src="/images/logo.png"
-        alt="Sprint-Snap-Logo"
-      ></img>
-    </div>
+    <img
+      className={`${className} w-max`}
+      src="/images/logo.png"
+      alt="Sprint-Snap-Logo"
+    ></img>
   );
 };
 

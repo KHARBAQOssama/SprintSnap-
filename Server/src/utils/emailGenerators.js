@@ -41,8 +41,21 @@ const generateResetPasswordMessage = (email) => {
 
   return message;
 };
-
+const generateInvitationEmail = (invitation,email, sender)=>{
+  const message = {
+    from: `SprintSnap <sprint_snap@company.com>`,
+    to: email,
+    subject: "Collaboration Invitation",
+    html: generateEmailUi(
+      "invitation collaborative",
+      `http://localhost:5173/invitation/${invitation}/confirm`,
+      sender
+    ),
+  };
+  return message;
+}
 module.exports = {
   generateEmailValidationMessage,
   generateResetPasswordMessage,
+  generateInvitationEmail,
 };

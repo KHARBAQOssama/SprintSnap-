@@ -69,6 +69,14 @@ class UserController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
+  getByEmail = async (req, res) => {
+    const result = await this.service.getUserByEmail(req.params.email);
+    if (result) {
+      delete result.password;
+      delete result.refreshToken;
+    }
+    return res.status(200).json({ user: result });
+  };
 }
 
 module.exports = UserController;

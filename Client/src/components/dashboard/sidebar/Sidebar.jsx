@@ -45,13 +45,13 @@ const Sidebar = () => {
       </div>
       <SidebarProjects />
       <div className="border rounded-xl flex gap-2 mt-auto overflow-hidden items-center">
-        <div className="relative">
-          <img className="h-13" src="/icons/defaultProfile.png" alt="" />
+        <div className="relative h-full">
+          <img className="h-full" src="/icons/defaultProfile.png" alt="" />
         </div>
         {user && (
-          <div className="flex flex-col">
-            <span className=" font-semibold text-gray-500 text-sm">{`${user.first_name} ${user.last_name}`}</span>
-            <span className="text-gray-400 text-xs">{`${user.email}`}</span>
+          <div className="flex flex-col py-2">
+            <span className=" font-medium text-gray-500 text-sm">{`${user.first_name} ${user.last_name}`}</span>
+            <span className="text-gray-400 text-xs font-light w-[15ch] overflow-hidden whitespace-nowrap text-ellipsis">{`${user.email}`}</span>
           </div>
         )}
       </div>

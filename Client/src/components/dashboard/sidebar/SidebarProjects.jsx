@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAll,reset } from "../../../../features/project/slice";
+import { getAll, reset } from "../../../../features/project/slice";
 import PlusIcon from "../../icons/PlusIcon";
 import ProjectItem from "./ProjectItem";
 import { toast } from "react-toastify";
@@ -27,7 +27,7 @@ const SidebarProjects = () => {
           <PlusIcon className={"h-6 w-6"} />
         </button>
       </div>
-      <ul className="py-3 flex flex-col gap-2">
+      <ul className="py-3 flex flex-col gap-2 max-h-[320px] overflow-y-scroll">
         {projects.length != 0 ? (
           projects.map((project) => (
             <ProjectItem key={project._id} project={project} />
