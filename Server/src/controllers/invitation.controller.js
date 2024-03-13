@@ -21,6 +21,7 @@ class InvitationController {
       if (!invitationExists) {
         const invitation = await this.service.create({
           user: user._id,
+          by: req.user._id,
           project,
           role,
         });
@@ -36,6 +37,26 @@ class InvitationController {
       console.log(error);
     }
   };
+  getOne = async (req,res)=>{
+    try {
+      const {invitation} = req.params
+      const existingInvitation =await this.service.getById(invitation);
+      return res.status(200).json({invitation:existingInvitation})
+      
+    } catch (error) {
+      return res.status(500).json({ message : 'something went wrong', error });
+    }
+  }
+  confirm = async (req,res)=>{
+    try {
+      const {invitation} = req.params
+      await this.service.confirm(invitation);
+      return res.status(200).json({message : 'invitation confirmed successfully'})
+    } catch (error) {
+      return res.status(500).json({ message: "something went wrong", error });
+    }
+  }
+  
   inviteToCollaboration = async (req, res) => {};
 }
 const service = new InvitationService(Invitation);
