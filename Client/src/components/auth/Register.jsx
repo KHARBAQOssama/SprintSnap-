@@ -47,11 +47,10 @@ const Register = () => {
           expiry: now.getTime() + 540000,
         })
       );
-      navigate('/dashboard')
+      navigate("/dashboard");
     }
 
-      dispatch(reset())
-    
+    dispatch(reset());
   }, [user, isError, isSuccess, isLoading, message]);
   return (
     <div className="flex flex-col gap-2 w-max justify-center">
@@ -95,8 +94,9 @@ const Register = () => {
             }
           ></CustomInput>
           <div className="flex items-center justify-between font-semibold">
-          <Link to={`/auth/login`} className="hover:text-blue-500 ms-auto">Register</Link>
-
+            <Link to={`/auth/login`} className="hover:text-blue-500 ms-auto">
+              Login
+            </Link>
           </div>
           <button className="py-2 rounded-lg bg-blue-500 text-white font-semibold">
             Register
