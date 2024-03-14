@@ -18,6 +18,7 @@ import Overview from "./components/dashboard/overview";
 import AllProjects from "./components/dashboard/projects/AllProjects";
 import SingleProject from "./components/dashboard/projects/SingleProject";
 import InvitationConfirmation from "./components/invitation";
+import Listener from "./components/Listener";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,29 +40,35 @@ function App() {
           <Route path="/auth/password/forget" element={<ForgetPassword />} />
           <Route path="/auth/password/reset" element={<ResetPassword />} />
         </Route>
+
         <Route element={<RequireAuthRoute />}>
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="/dashboard" element={<Overview />}></Route>
-            <Route
-              path="/dashboard/activities"
-              element={<Activities />}
-            ></Route>
-            <Route path="/dashboard/projects" element={<Projects />}>
+          <Route element={<Listener/>}>
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="/dashboard" element={<Overview />}></Route>
               <Route
-                path="/dashboard/projects"
-                element={<AllProjects />}
+                path="/dashboard/activities"
+                element={<Activities />}
               ></Route>
+              <Route path="/dashboard/projects" element={<Projects />}>
+                <Route
+                  path="/dashboard/projects"
+                  element={<AllProjects />}
+                ></Route>
+                <Route
+                  path="/dashboard/projects/:id"
+                  element={<SingleProject />}
+                ></Route>
+              </Route>
               <Route
-                path="/dashboard/projects/:id"
-                element={<SingleProject />}
+                path="/dashboard/analytics"
+                element={<Analytics />}
               ></Route>
             </Route>
-            <Route path="/dashboard/analytics" element={<Analytics />}></Route>
+            <Route
+              path="/invitation/:id/confirm"
+              element={<InvitationConfirmation />}
+            ></Route>
           </Route>
-          <Route
-            path="/invitation/:id/confirm"
-            element={<InvitationConfirmation />}
-          ></Route>
         </Route>
       </Routes>
     </>
