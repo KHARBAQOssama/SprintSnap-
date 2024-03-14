@@ -267,6 +267,7 @@ const ProjectInfo = ({ project }) => {
             </span> */}
             {project.team.members.map((member, index) => (
               <div
+              key={index}
                 className={`w-[30px] absolute rounded-full overflow-hidden `}
                 style={{
                   left: `${index * 10}px`,

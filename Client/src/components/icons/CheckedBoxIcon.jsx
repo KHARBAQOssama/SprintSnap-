@@ -12,9 +12,9 @@ const CheckedBoxIcon = ({ className, color }) => {
       <path
         d="M4 8L6 10L11 5"
         stroke="#E6E4F0"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

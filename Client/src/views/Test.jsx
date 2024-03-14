@@ -97,7 +97,7 @@ const Test = () => {
           </div>
         </div>
       </aside>
-      <main className="min-w-[60em]">
+      {/* <main className="min-w-[60em]">
         <div className="bg-white p-6 border-b">
           <div className="flex gap-2 items-baseline">
             <div className="flex gap-2 items-center">
@@ -237,7 +237,7 @@ const Test = () => {
         closeModal={() => {
           setOpen(!open);
         }}
-      />
+      /> */}
       <main className="min-w-[60em] flex-1 h-[100vh] bg-white">
         <Board />
       </main>

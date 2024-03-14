@@ -36,7 +36,6 @@ export const createProjectRejected = (state, action) => {
   state.isError = true;
 };
 export const getProjectFulfilled = (state, action) => {
-  console.log(action.payload.project, "project");
   state.activeProject = action.payload.project;
   state.isLoading = false;
   state.isSuccess = true;

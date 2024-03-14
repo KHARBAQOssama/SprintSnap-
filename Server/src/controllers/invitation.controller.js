@@ -1,3 +1,4 @@
+const { userSocketMap } = require("../config/socket.config");
 const Invitation = require("../models/invitation.model");
 const InvitationService = require("../services/invitation.service");
 const {
@@ -29,6 +30,13 @@ class InvitationController {
         await emailSender(
           generateInvitationEmail(invitation._id, user.email, sender)
         );
+        
+        if (userSocketMap.has(user._id)) {
+          const socketId = userSocketMap.get(user._id);
+          const io = req.app.get("socketIo");
+          io.to(socketId).emit("invitation", { invitation });
+        }
+
         return res.status(201).json({ invitation });
       } else {
         return res.status(400).json({ message: "already invited" });

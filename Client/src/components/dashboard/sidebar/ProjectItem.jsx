@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 const ProjectItem = ({ project }) => {
   const navigate = useNavigate();
   const handleClick = (_id) => {
-    console.log(_id);
     navigate(`/dashboard/projects/${_id}`);
   };
   return (
