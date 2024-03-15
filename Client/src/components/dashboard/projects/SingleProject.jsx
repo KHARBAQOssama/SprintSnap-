@@ -10,7 +10,6 @@ const SingleProject = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (id) {
-      console.log(id, "hi");
       dispatch(getProject(id));
     }
   }, [id]);

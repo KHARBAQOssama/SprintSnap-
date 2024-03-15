@@ -211,7 +211,7 @@ const InviteButton = ({ inviteFormOpen, toggleForm, project }) => {
     <div
       className={`w-[20px] h-[20px] absolute top-[50%] translate-y-[-50%] hover:z-50`}
       style={{
-        left: `${project.team.members.length * 10 + 25}px`,
+        left: `${project.team.members.length * 10 + 35}px`,
         zIndex: 10,
       }}
     >
@@ -229,7 +229,6 @@ const InviteButton = ({ inviteFormOpen, toggleForm, project }) => {
     </div>
   );
 };
-
 const ProjectInfo = ({ project }) => {
   const [inviteFormOpen, setInviteFormOpen] = useState(false);
   // const { user } = useSelector((state) => state.user);
@@ -267,9 +266,10 @@ const ProjectInfo = ({ project }) => {
             </span> */}
             {project.team.members.map((member, index) => (
               <div
-                className={`w-[30px] absolute rounded-full overflow-hidden `}
+                key={index}
+                className={`w-[30px] absolute rounded-full overflow-hidden hover:z-50`}
                 style={{
-                  left: `${index * 10}px`,
+                  left: `${index * 15}px`,
                   zIndex: project.team.members.length - index,
                 }}
               >
