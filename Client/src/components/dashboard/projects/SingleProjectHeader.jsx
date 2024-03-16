@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { formatDate, randomColorGenerator } from "../../../utils/functions";
 import EditIcon from "../../icons/EditIcon";
-import ListIcon from "../../icons/Listicon";
 import MoreIcon from "../../icons/MoreIcon";
 import PlusIcon from "../../icons/PlusIcon";
 import ProfileIcon from "../../icons/ProfileIcon";
@@ -141,7 +140,9 @@ const AddTeammateModal = ({ open, project, toggleForm }) => {
           />
           {user && (
             <div className="p-2 flex gap-2 items-center bg-gray-100 mt-2 rounded">
-              <div className={`w-[30px]  rounded-full overflow-hidden`}>
+              <div
+                className={`w-[30px] rounded-full overflow-hidden border-2 border-white`}
+              >
                 <img
                   className="w-full"
                   src={user.image_url || "/icons/defaultProfile.png"}
