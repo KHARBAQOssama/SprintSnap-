@@ -13,19 +13,19 @@ const handleSocketConnection = (socket) => {
 const anotherExample = (userId, message, io) => {
   const socketId = userSocketsMap.get(userId);
   if (socketId) {
-    io.to(socketId).emit("notification", message);
+    io.to(socketId).emit("", message);
   }
 };
 const example = (req, res) => {
-  //   const message = "New notification!";
+  //   const message = "New !";
   //   const userIdsToNotify = getUserIdsToNotify(); // Simulated user IDs to notify
   //   userIdsToNotify.forEach((userId) => {
-  //     socketHandler.sendNotificationToUser(
+  //     socketHandler.sendToUser(
   //       userId,
   //       message,
   //       req.app.get("socketio")
   //     );
   //   });
-  //   res.send("Notifications sent successfully!");
+  //   res.send("s sent successfully!");
 };
 module.exports = { handleSocketConnection };

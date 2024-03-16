@@ -6,6 +6,7 @@ const {
   generateInvitationEmail,
 } = require("../utils/emailGenerators");
 const emailSender = require("../utils/emailSender");
+const notificationControllerInstance = require("./notification.controller");
 
 class InvitationController {
   service;
@@ -26,17 +27,17 @@ class InvitationController {
           project,
           role,
         });
-        console.log(invitation);
-        await emailSender(
-          generateInvitationEmail(invitation._id, user.email, sender)
-        );
-        
-        if (userSocketMap.has(user._id)) {
-          const socketId = userSocketMap.get(user._id);
-          const io = req.app.get("socketIo");
-          io.to(socketId).emit("invitation", { invitation });
-        }
-
+        // console.log(invitation);
+        // await emailSender(
+        //   generateInvitationEmail(invitation._id, user.email, sender)
+        // );
+        notificationControllerInstance.create({
+          to: [user._id],
+          by: req.user._id,
+          project,
+          type : "Invitation",
+          context : invitation._id
+        });
         return res.status(201).json({ invitation });
       } else {
         return res.status(400).json({ message: "already invited" });
