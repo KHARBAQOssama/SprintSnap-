@@ -12,14 +12,16 @@ class NotificationController {
       return res.status(200).json({ notifications });
     } catch (error) {}
   };
-  create = async (data) => {
+  create = async (data, req) => {
     try {
       const notification = await this.service.create(data);
       if (notification) {
         if (userSocketMap.has(notification.to[0]._id.toString())) {
           const socketId = userSocketMap.get(notification.to[0]._id.toString());
           const io = req.app.get("socketIo");
-          io.to(socketId).emit("notification", notification);
+          
+          let sent = io.to(socketId).emit("notification", notification);
+          console.log('sent',sent, notification);
         }
       }
       return notification;
