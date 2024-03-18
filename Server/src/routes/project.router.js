@@ -24,7 +24,7 @@ router.get(
   projectController.getOne
 );
 router.patch(
-  "/:projectId",
+  "/:id",
   requireAuth,
   projectPolicies.canEdit,
   projectValidation.update,

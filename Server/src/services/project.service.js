@@ -36,9 +36,6 @@ class ProjectService {
   };
   getOne = async (_id) => {
     try {
-      // const teams = await Team.find({ members: ownerId }, "_id");
-      // const teamIds = teams.map((team) => team._id);
-
       const projects = await this.model.findById(_id).populate({
         path: "team",
         model: "Team",
@@ -72,12 +69,10 @@ class ProjectService {
       console.log(error);
     }
   };
-  update = async (id, data) => {
+  update = async (data) => {
     try {
-      let project = await this.model.findUnique({ where: { _id: id } });
-      project = { ...project, ...data };
-      await project.save();
-      return project;
+      let project = await this.model.findByIdAndUpdate(data._id,data,{new:true});
+      return await this.getOne(project._id);
     } catch (error) {
       console.log(error);
     }

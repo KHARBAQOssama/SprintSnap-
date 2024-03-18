@@ -11,7 +11,7 @@ module.exports = {
   update: [
     body("name").optional().isString().notEmpty(),
     body("description").optional().isString().notEmpty(),
-    body("task_status").optional().isArray(2).notEmpty(),
     body("cover").optional().isString(),
+    body("icon").isString(),
   ],
 };
