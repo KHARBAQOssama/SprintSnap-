@@ -35,6 +35,27 @@ export const createProjectRejected = (state, action) => {
   state.isLoading = false;
   state.isError = true;
 };
+export const updateProjectFulfilled = (state, action) => {
+  console.log(action);
+  const projects = state.projects.map(project =>{
+    if(project._id == action.payload.project._id) return action.payload.project
+    else return project
+  } );
+  state.activeProject = action.payload.project;
+  state.projects = projects;
+  state.isLoading = false;
+  state.isSuccess = true;
+  toast.success(action.payload.message);
+};
+export const updateProjectRejected = (state, action) => {
+  if (action.payload.status == 401) {
+    state.status = action.payload.status;
+  } else {
+    state.message = action.payload.data.message;
+  }
+  state.isLoading = false;
+  state.isError = true;
+};
 export const getProjectFulfilled = (state, action) => {
   state.activeProject = action.payload.project;
   state.isLoading = false;
