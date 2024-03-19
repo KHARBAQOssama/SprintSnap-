@@ -22,7 +22,6 @@ module.exports = async (req, res, next) => {
     try {
       const user = await User.findById(userId, "refreshToken");
       if (!user || !user.refreshToken) {
-        console.log("no user found");
         return res.status(401).json({ message: "Forbidden" });
       }
       const decodedRefreshToken = jwt.verify(

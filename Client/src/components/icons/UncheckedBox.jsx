@@ -15,7 +15,7 @@ const UncheckedBox = ({ className, color }) => {
         height="13"
         rx="2"
         stroke={color || "#5577FF"}
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   );

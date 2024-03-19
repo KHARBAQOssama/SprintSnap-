@@ -2,10 +2,33 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../../../features/appStatus/slice";
 import AddProjectModal from "./AddProjectModal";
+import UpdateProjectModal from "./UpdateProjectModal";
+import AddTaskModal from "./AddTaskModal";
+import OutsideClickHandler from "../../../widgets/OutsideClickHandler";
 
 const ModalContentRenderer = () => {
-  const { addingProject } = useSelector((state) => state.appStatus);
-  return addingProject ? <AddProjectModal /> : <></>;
+  const { addingProject, addingTask, updatingProject } = useSelector(
+    (state) => state.appStatus
+  );
+  const dispatch = useDispatch();
+  const close = () => {
+    dispatch(closeModal());
+  };
+  return (
+    // <OutsideClickHandler onOutsideClick={close}>
+    // {
+    addingProject ? (
+      <AddProjectModal />
+    ) : updatingProject ? (
+      <UpdateProjectModal />
+    ) : addingTask ? (
+      <AddTaskModal />
+    ) : (
+      <></>
+    )
+    // }
+    // </OutsideClickHandler>
+  );
 };
 const Modal = () => {
   const { modalOpen, addingProject } = useSelector((state) => state.appStatus);

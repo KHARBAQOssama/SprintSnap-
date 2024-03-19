@@ -34,7 +34,7 @@ const SidebarProjects = () => {
           ))
         ) : (
           <div className="flex items-center flex-col ">
-            <img src="images/noProjects.jpg" className="w-[70%]" alt="" />
+            <img src="/images/noProjects.jpg" className="w-[70%]" alt="" />
             <h3 className="w-[80%] text-center font-bold text-blue-400">
               You have No project To Work On
             </h3>
