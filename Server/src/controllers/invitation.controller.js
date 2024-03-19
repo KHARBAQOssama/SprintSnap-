@@ -37,7 +37,7 @@ class InvitationController {
           project,
           type : "Invitation",
           context : invitation._id
-        });
+        },req);
         return res.status(201).json({ invitation });
       } else {
         return res.status(400).json({ message: "already invited" });

@@ -35,12 +35,35 @@ export const createProjectRejected = (state, action) => {
   state.isLoading = false;
   state.isError = true;
 };
+export const createTaskFulfilled = (state, action) => {
+  console.log(action.payload.task);
+  // state.projects.tasks.push(action.payload.task);
+  if (state.activeProject.tasks) {
+    state.activeProject.tasks.push(action.payload.task);
+  } else {
+    state.activeProject.tasks = [action.payload.task];
+  }
+  state.isLoading = false;
+  state.isSuccess = true;
+  toast.success(action.payload.message);
+};
+export const createTaskRejected = (state, action) => {
+  console.log(action);
+  // if (action.payload.status == 401) {
+  //   state.status = action.payload.status;
+  // } else {
+  //   state.message = action.payload.data.message;
+  // }
+  // state.isLoading = false;
+  // state.isError = true;
+};
 export const updateProjectFulfilled = (state, action) => {
   console.log(action);
-  const projects = state.projects.map(project =>{
-    if(project._id == action.payload.project._id) return action.payload.project
-    else return project
-  } );
+  const projects = state.projects.map((project) => {
+    if (project._id == action.payload.project._id)
+      return action.payload.project;
+    else return project;
+  });
   state.activeProject = action.payload.project;
   state.projects = projects;
   state.isLoading = false;

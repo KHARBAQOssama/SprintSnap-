@@ -36,15 +36,27 @@ class ProjectService {
   };
   getOne = async (_id) => {
     try {
-      const projects = await this.model.findById(_id).populate({
-        path: "team",
-        model: "Team",
-        populate: {
-          path: "members",
-          model: "User",
-          select: "-password -refreshToken",
-        },
-      });
+      const projects = await this.model
+        .findById(_id)
+        .populate({
+          path: "team",
+          model: "Team",
+          populate: {
+            path: "members",
+            model: "User",
+            select: "first_name last_name _id",
+          },
+        })
+        .populate({
+          path: "tasks",
+          model: "Task",
+          populate: {
+            path: "assigned_to",
+            model: "User",
+            select: "first_name last_name _id",
+          },
+          select : "-__v "
+        });
 
       return projects;
     } catch (error) {
@@ -71,7 +83,9 @@ class ProjectService {
   };
   update = async (data) => {
     try {
-      let project = await this.model.findByIdAndUpdate(data._id,data,{new:true});
+      let project = await this.model.findByIdAndUpdate(data._id, data, {
+        new: true,
+      });
       return await this.getOne(project._id);
     } catch (error) {
       console.log(error);

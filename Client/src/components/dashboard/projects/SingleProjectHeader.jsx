@@ -7,9 +7,17 @@ import ProfileIcon from "../../icons/ProfileIcon";
 import ProgressIcon from "../../icons/ProgressIcon";
 import TimeIcon from "../../icons/TimeIcon";
 import api from "../../../api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProject } from "../../../../features/appStatus/slice";
+import { reset } from "../../../../features/project/slice";
+import MembersDisplayer from "./MembersDisplayer";
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const TopHead = ({ project }) => {
+  const dispatch = useDispatch();
+  const openUpdateModal = () => {
+    dispatch(reset());
+    dispatch(updateProject());
+  };
   return (
     <div className="flex gap-2 items-baseline">
       <div className="flex gap-2 items-center">
@@ -19,7 +27,7 @@ const TopHead = ({ project }) => {
         ></div>
         <span className="font-semibold text-xl ">{project.name}</span>
       </div>
-      <button className="ms-auto">
+      <button className="ms-auto" onClick={openUpdateModal}>
         <EditIcon />
       </button>
       <button>
@@ -48,18 +56,18 @@ const Cover = ({ project }) => {
             </span>
           </div>
           <div
-            className="flex gap-6 ms-auto bg-opacity-30 rounded p-3"
-            style={{
-              backgroundImage:
-                "linear-gradient(to bottom , #00000040, #FFFFFF40)",
-            }}
+            className="flex gap-6 ms-auto bg-opacity-20 rounded p-3 bg-white "
+            // style={{
+            //   backgroundImage:
+            //     "linear-gradient(to bottom , #00000040, #FFFFFF40)",
+            // }}
           >
             <div className="flex flex-col">
-              <span className="text-white">CREATED</span>
+              <span className="text-gray">CREATED</span>
               <span className="">{formatDate(project.createdAt)}</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-white">TRACKED TIME</span>
+              <span className="text-gray">TRACKED TIME</span>
               <span className=""> -- : -- </span>
             </div>
           </div>
@@ -212,7 +220,7 @@ const InviteButton = ({ inviteFormOpen, toggleForm, project }) => {
     <div
       className={`w-[20px] h-[20px] absolute top-[50%] translate-y-[-50%] hover:z-50`}
       style={{
-        left: `${project.team.members.length * 10 + 35}px`,
+        left: `${project.team.members.length * 13 + 35}px`,
         zIndex: 10,
       }}
     >
@@ -235,7 +243,7 @@ const ProjectInfo = ({ project }) => {
   // const { user } = useSelector((state) => state.user);
   const toggleForm = () => setInviteFormOpen(!inviteFormOpen);
   return (
-    <div className="flex gap-4 py-3 px-2">
+    <div className="flex gap-4 py-3 px-2 border-b bg-white">
       <div className="flex-1 flex flex-col gap-3">
         <div className="flex gap-2 items-center">
           <TimeIcon /> <span className="text-[#5E5E5E]">Created At</span>
@@ -245,43 +253,40 @@ const ProjectInfo = ({ project }) => {
             </span>
           </div>
         </div>
-        {/* <div className="flex gap-2 items-center">
-          <ListIcon /> <span className="text-[#5E5E5E]">Tags</span>
-          <div className="w-[55%] ms-auto flex flex-wrap gap-2">
-            <span className="text-[#FD71AF] bg-[#FD71AF62] font-medium px-2 py-1 rounded-full">
-              Profitable
-            </span>
-            <span className="text-[#00B884] bg-[#00B88462] font-medium px-2 py-1 rounded-full">
-              AI
-            </span>
-            <span className="text-[#5577FF] bg-[#5577FF62] font-medium px-2 py-1 rounded-full">
-              1 Person
-            </span>
-          </div>
-        </div> */}
+
         <div className="flex gap-2 ">
           <ProfileIcon /> <span className="text-[#5E5E5E]">Assign</span>
           <div className="w-[55%] ms-auto relative">
-            {/* <span className="text-[#AEAEAE] font-light bg-[#AEAEAE50] px-3 rounded-lg">
-              @ Mustafa
-            </span> */}
-            {project.team.members.map((member, index) => (
+            {/* {project.team.members.map((member, index) => (
               <div
                 key={index}
-                className={`w-[30px] absolute rounded-full overflow-hidden hover:z-50`}
+                className={`w-[30px] h-[30px] absolute rounded-full overflow-hidden shadow cursor-pointer hover:bg-white hover:z-10 ${
+                  !member.image_url ? "flex items-center justify-center" : ""
+                }`}
                 style={{
-                  left: `${index * 15}px`,
-                  zIndex: project.team.members.length - index,
+                  left: `${index * 18}px`,
+                  // zIndex: project.team.members.length - index,
+                  backgroundColor: randomColorGenerator(),
                 }}
               >
-                <img
-                  className="w-full"
-                  src={member.image_url || "/icons/defaultProfile.png"}
-                  alt={member.first_name[0] + member.last_name[0]}
-                  title={member.first_name + " " + member.last_name}
-                />
+                {member.image_url ? (
+                  <img
+                    className="w-full"
+                    src={member.image_url}
+                    alt={member.first_name[0] + member.last_name[0]}
+                    title={member.first_name + " " + member.last_name}
+                  />
+                ) : (
+                  <span
+                    className="text-center uppercase text-sm text-white"
+                    title={member.first_name + " " + member.last_name}
+                  >
+                    {member.first_name[0] + member.last_name[0]}
+                  </span>
+                )}
               </div>
-            ))}
+            ))} */}
+            <MembersDisplayer members={project.team.members} />
             <InviteButton
               inviteFormOpen={inviteFormOpen}
               project={project}

@@ -16,14 +16,19 @@ const updateProject = async (data) => {
 };
 const getProject = async (data) => {
   const response = await api.get(`/project/${data}`, data);
+  console.log(response);
   return response.data;
 };
-
+const createTask = async (data) => {
+  const response = await api.post("/task", data);
+  return response.data;
+};
 const projectService = {
   getAll,
   createProject,
   getProject,
-  updateProject
+  updateProject,
+  createTask,
 };
 
 export default projectService;
