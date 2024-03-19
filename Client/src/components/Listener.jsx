@@ -1,14 +1,21 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import BellIcon from "./icons/BellIcon";
+import NotificationsHolder from "./custom/Notification";
+import OutsideClickHandler from "../widgets/OutsideClickHandler";
+import { getNotifications, setNotification } from "../../features/notification/slice";
 const ENDPOINT = "http://localhost:3000";
 
 function Listener() {
+  const [notifOpen, setNotifOpen] = useState(false);
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { notifications } = useSelector((state) => state.notification);
   useEffect(() => {
     if (user) {
+      
       const socket = socketIOClient(ENDPOINT);
       console.log(user._id);
       socket.on("connect", () => {
@@ -16,11 +23,12 @@ function Listener() {
         socket.emit("authenticate", userId);
       });
 
-      socket.on("notification", (message) => {
-        console.log("Received notification:", message);
+      socket.on("notification", (notification) => {
+        console.log(notification);
+        dispatch(setNotification(notification))
       });
-      socket.on("invitation", ({invitation}) => {
-        console.log(invitation);
+      socket.on("invitation", ({ invitation }) => {
+        console.log("Received notification:", invitation);
       });
 
       return () => {
@@ -28,23 +36,25 @@ function Listener() {
       };
     }
   }, [user]);
+  useEffect(() => {
+    if (!notifications.length) dispatch(getNotifications());
+  }, []);
   return (
     <>
       <div className="absolute bottom-8 right-8">
         <div className="relative">
-          <div className="p-1 bg-white shadow max-w-[300px] w-[300px] absolute right-0 bottom-[105%] rounded-lg">
-            <div className="p-2 bg-blue-50 hover:bg-blue-200 rounded cursor-pointer">
-              <h1 className="font-semibold">Hello world</h1>
-              <p className="text-sm text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Eligendi illum sunt quis.
-              </p>
-            </div>
-          </div>
-          <button className="p-2 rounded-full shadow bg-white relative">
-            <span className="bg-red-600 absolute top-0 right-0 w-3 h-3 rounded-full"></span>
-            <BellIcon className={`w-5 h-5`} />
-          </button>
+          {notifOpen && (
+            <NotificationsHolder notifications={notifications} />
+          )}
+          <OutsideClickHandler onOutsideClick={() => setNotifOpen(false)}>
+            <button
+              className="p-2 rounded-full shadow bg-white relative"
+              onClick={() => setNotifOpen(!notifOpen)}
+            >
+              <span className="bg-red-600 absolute top-0 right-0 w-3 h-3 rounded-full"></span>
+              <BellIcon className={`w-5 h-5`} />
+            </button>
+          </OutsideClickHandler>
         </div>
       </div>
       <Outlet />

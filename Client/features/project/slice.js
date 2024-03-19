@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import projectService from "./service";
-import { Pending, createProjectFulfilled, createProjectRejected, getAllFulfilled, getAllRejected, getProjectFulfilled, getProjectRejected } from "./cases";
+import { Pending, createProjectFulfilled, createProjectRejected, createTaskFulfilled, createTaskRejected, getAllFulfilled, getAllRejected, getProjectFulfilled, getProjectRejected, updateProjectFulfilled, updateProjectRejected } from "./cases";
 
 
 const initialState = {
@@ -29,6 +29,29 @@ export const createProject = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await projectService.createProject(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+export const createTask = createAsyncThunk(
+  "project/createTask",
+  async (data, thunkAPI) => {
+    try {
+      const response = await projectService.createTask(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const updateProject = createAsyncThunk(
+  "project/updateProject",
+  async (data, thunkAPI) => {
+    try {
+      const response = await projectService.updateProject(data);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -79,11 +102,23 @@ export const projectSlice = createSlice({
       .addCase(createProject.rejected, (state, action) => {
         createProjectRejected(state, action);
       })
+      .addCase(updateProject.fulfilled, (state, action) => {
+        updateProjectFulfilled(state, action);
+      })
+      .addCase(updateProject.rejected, (state, action) => {
+        updateProjectRejected(state, action);
+      })
       .addCase(getProject.fulfilled, (state, action) => {
         getProjectFulfilled(state, action);
       })
       .addCase(getProject.rejected, (state, action) => {
         getProjectRejected(state, action);
+      })
+      .addCase(createTask.fulfilled, (state, action) => {
+        createTaskFulfilled(state, action);
+      })
+      .addCase(createTask.rejected, (state, action) => {
+        createTaskRejected(state, action);
       });
   },
 });

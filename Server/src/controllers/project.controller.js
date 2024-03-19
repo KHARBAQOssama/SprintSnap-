@@ -47,8 +47,15 @@ class ProjectController {
     } catch (error) {}
   };
   update = async (req, res) => {
-    console.log(req.user._id, req.params.projectId);
-    return res.json("hello");
+    try {
+      const project = await this.service.update(req.body);
+      console.log(project);
+      return res
+        .status(200)
+        .json({ message: "project updated successfully", project });
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 

@@ -41,3 +41,31 @@ export const formatDate = (inputDateStr) => {
 
   return formattedDate;
 };
+
+export const formatTimestamp = (timestamp) => {
+    const currentDate = new Date();
+    const inputDate = new Date(timestamp);
+    const diff = (currentDate - inputDate) / 1000; 
+
+    const seconds = Math.floor(diff);
+    const minutes = Math.floor(diff / 60);
+    const hours = Math.floor(diff / 3600);
+    const days = Math.floor(diff / 86400);
+
+    if (seconds < 60) {
+        return seconds + 's ago';
+    } else if (minutes < 60) {
+        return minutes + 'm ago';
+    } else if (hours < 24) {
+        return hours +'h ago';
+    } else if (days < 7) {
+        return days +'d ago';
+    } else {
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const day = inputDate.getDate();
+        const month = months[inputDate.getMonth()];
+        const year = inputDate.getFullYear();
+        return day + ' ' + month + ' ' + year;
+    }
+}
+

@@ -23,6 +23,7 @@ const projectSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Team",
     },
+    tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
     task_status: [{ type: String }],
     deleted: { type: Boolean, default: "false" },
     cover: { type: String },
