@@ -18,6 +18,7 @@ router.post(
   validationFailed,
   userController.registerUser
 );
+
 router.post("/login", loginValidation, validationFailed, authController.login);
 router.post("/logout", requireAuth, authController.logout);
 router.post("/password/reset", authController.resetPassword);
