@@ -37,7 +37,6 @@ export const createProjectRejected = (state, action) => {
 };
 export const createTaskFulfilled = (state, action) => {
   console.log(action.payload.task);
-  // state.projects.tasks.push(action.payload.task);
   if (state.activeProject.tasks) {
     state.activeProject.tasks.push(action.payload.task);
   } else {
@@ -49,13 +48,26 @@ export const createTaskFulfilled = (state, action) => {
 };
 export const createTaskRejected = (state, action) => {
   console.log(action);
-  // if (action.payload.status == 401) {
-  //   state.status = action.payload.status;
+};
+export const changeTaskStatusFulfilled = (state, action) => {
+  console.log(action.payload.task);
+  for (let i = 0; i < state.activeProject.tasks.length; i++) {
+    if (state.activeProject.tasks[i]._id === action.payload.task._id) {
+      state.activeProject.tasks[i] = action.payload.task;
+      break;
+    }
+  }
+  // if (state.activeProject.tasks) {
+  //   state.activeProject.tasks.push(action.payload.task);
   // } else {
-  //   state.message = action.payload.data.message;
+  //   state.activeProject.tasks = [action.payload.task];
   // }
   // state.isLoading = false;
-  // state.isError = true;
+  // state.isSuccess = true;
+  // toast.success(action.payload.message);
+};
+export const changeTaskStatusRejected = (state, action) => {
+  console.log(action);
 };
 export const updateProjectFulfilled = (state, action) => {
   console.log(action);
