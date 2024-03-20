@@ -11,5 +11,6 @@ router.post(
   validationFailed,
   taskControllerInstance.create
 );
+router.patch("/status/:id", requireAuth, taskControllerInstance.changeStatus);
 
 module.exports = router;
