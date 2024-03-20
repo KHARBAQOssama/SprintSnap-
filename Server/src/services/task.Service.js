@@ -19,6 +19,22 @@ class TaskService {
       console.log(error);
     }
   };
+  changeStatus = async (id, status) => {
+    try {
+      const updatedTask = await this.model
+        .findOneAndUpdate({ _id: id }, { status: status }, { new: true })
+        .populate({
+          path: "assigned_to",
+          model: "User",
+          select: "first_name last_name _id",
+        });
+
+      return updatedTask;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 }
 const serviceInstance = new TaskService(Task);
 module.exports = serviceInstance;

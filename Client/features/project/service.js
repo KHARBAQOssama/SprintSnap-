@@ -23,12 +23,19 @@ const createTask = async (data) => {
   const response = await api.post("/task", data);
   return response.data;
 };
+const changeTaskStatus = async (data) => {
+  const response = await api.patch(`/task/status/${data.id}`, {
+    status: data.status,
+  });
+  return response.data;
+};
 const projectService = {
   getAll,
   createProject,
   getProject,
   updateProject,
   createTask,
+  changeTaskStatus,
 };
 
 export default projectService;

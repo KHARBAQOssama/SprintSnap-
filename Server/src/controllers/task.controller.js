@@ -16,13 +16,6 @@ class TaskController {
   //   };
   create = async (req, res) => {
     try {
-      // const { files } = req.body;
-      // const getFilePaths = await Promise.all(
-      //   files.map(async (file) => {
-      //     return await storeFileGetPath(file);
-      //   })
-      // );
-      // console.log(getFilePaths);
       const files = await Promise.all(
         req.body.files.map(async (file) => {
           return await storeFileGetPath(file.base64);
@@ -54,21 +47,24 @@ class TaskController {
         }
       }
       return res
-        .status(200)
-        .json({ message: "task created successfully", task });
-      //   if (task) {
-      //     if (userSocketMap.has(task.to[0]._id.toString())) {
-      //       const socketId = userSocketMap.get(task.to[0]._id.toString());
-      //       const io = req.app.get("socketIo");
-
-      //       let sent = io.to(socketId).emit("task", task);
-      //       console.log("sent", sent, task);
-      //     }
-      //   }
-      return res
         .status(201)
         .json({ message: "task created successfully", task });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  changeStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const task = await this.service.changeStatus(id, status);
+      return res
+        .status(201)
+        .json({ message: "task updated successfully", task });
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 

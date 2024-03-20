@@ -17,7 +17,7 @@ const Dashboard = () => {
     <section className="flex h-[100vh] w-[100vw]">
       <Sidebar />
       <Modal />
-      <main className="flex-1 p-5 h-[100vh]">
+      <main className="p-5 h-[100vh] " style={{ width: "calc(100vw - 556px)" }}>
         <Outlet />
       </main>
       <div className="w-[300px] border-l p-6 bg-gray-50">

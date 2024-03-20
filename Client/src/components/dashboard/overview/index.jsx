@@ -3,6 +3,7 @@ import FoldersIcon from "../../icons/FoldersIcon";
 import CheckedBoxIcon from "../../icons/CheckedBoxIcon";
 import UncheckedBox from "../../icons/UncheckedBox";
 import { useNavigate } from "react-router-dom";
+import MembersDisplayer from "../projects/MembersDisplayer";
 
 const Overview = () => {
   const teams = [1, 2, 3, 4, 5];
@@ -88,22 +89,8 @@ const Overview = () => {
                 <p className="text-sm text-gray-500 w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
                   {project.description}
                 </p>
-                <div className="flex relative h-4 mt-auto">
-                  {project.team.members.map((member, index) => (
-                    <div
-                      className={`w-[25px] absolute rounded-full overflow-hidden`}
-                      style={{
-                        left: `${index * 10}px`,
-                        zIndex: teams.length - index,
-                      }}
-                    >
-                      <img
-                        className="w-full"
-                        src={member.image_url || "/icons/defaultProfile.png"}
-                        alt=""
-                      />
-                    </div>
-                  ))}
+                <div className="flex relative h-4 mb-2">
+                  <MembersDisplayer members={project.team.members} />
                 </div>
               </div>
             ) : (

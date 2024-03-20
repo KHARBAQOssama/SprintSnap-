@@ -20,6 +20,10 @@ app.use(
     credentials: true,
   })
 );
+app.use(
+  "/files",
+  express.static(path.join(__dirname, "public"))
+);
 
 const socketIo = require("socket.io");
 const { handleSocketConnection } = require("./src/config/socketHandler");

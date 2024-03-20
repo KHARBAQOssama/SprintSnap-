@@ -1,11 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import projectService from "./service";
-import { Pending, createProjectFulfilled, createProjectRejected, createTaskFulfilled, createTaskRejected, getAllFulfilled, getAllRejected, getProjectFulfilled, getProjectRejected, updateProjectFulfilled, updateProjectRejected } from "./cases";
-
+import {
+  Pending,
+  changeTaskStatusFulfilled,
+  createProjectFulfilled,
+  createProjectRejected,
+  createTaskFulfilled,
+  createTaskRejected,
+  getAllFulfilled,
+  getAllRejected,
+  getProjectFulfilled,
+  getProjectRejected,
+  updateProjectFulfilled,
+  updateProjectRejected,
+} from "./cases";
 
 const initialState = {
   projects: [],
-  activeProject : null,
+  activeProject: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -40,6 +52,17 @@ export const createTask = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await projectService.createTask(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+export const changeTaskStatus = createAsyncThunk(
+  "project/changeTaskStatus",
+  async (data, thunkAPI) => {
+    try {
+      const response = await projectService.changeTaskStatus(data);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response);
@@ -119,6 +142,9 @@ export const projectSlice = createSlice({
       })
       .addCase(createTask.rejected, (state, action) => {
         createTaskRejected(state, action);
+      })
+      .addCase(changeTaskStatus.fulfilled, (state, action) => {
+        changeTaskStatusFulfilled(state, action);
       });
   },
 });

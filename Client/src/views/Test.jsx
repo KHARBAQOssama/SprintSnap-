@@ -8,7 +8,7 @@ import PlusIcon from "../components/icons/PlusIcon";
 import EditIcon from "../components/icons/EditIcon";
 import MoreIcon from "../components/icons/MoreIcon";
 import TimeIcon from "../components/icons/TimeIcon";
-import ListIcon from "../components/icons/Listicon";
+import ListIcon from "../components/icons/ListIcon";
 import ProfileIcon from "../components/icons/ProfileIcon";
 import CheckedBoxIcon from "../components/icons/CheckedBoxIcon";
 import Modal from "./Modal";
