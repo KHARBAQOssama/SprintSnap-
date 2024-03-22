@@ -35,7 +35,9 @@ class ProjectController {
       return res
         .status(201)
         .json({ message: "project created successfully", project });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   addTeamMembers = async (req, res) => {
