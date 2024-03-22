@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "dev": "nodemon app.js",
     "generate:jwt_secret": "node src/utils/secretKeyGenerator.js"
   },

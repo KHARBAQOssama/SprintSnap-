@@ -6,12 +6,9 @@ module.exports = async (req, res, next) => {
   if (!accessToken) {
     return res.status(401).json({ message: "Forbidden" });
   }
-
   try {
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
-
     req.user = decoded;
-
     return next();
   } catch (err) {
     const userId = req.cookies.userId;
@@ -45,7 +42,6 @@ module.exports = async (req, res, next) => {
       });
       return next();
     } catch (err) {
-      console.log(err);
       return res.status(401).json({ message: "Forbidden", err });
     }
   }

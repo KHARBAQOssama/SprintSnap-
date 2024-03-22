@@ -6,6 +6,7 @@ export default {
       backgroundImage: {
         "auth-bg": "url('/images/bgauth.jpg')",
         "light-auth-bg": "url('/images/lightauthbg.jpg')",
+        "landing": "url('/images/LandingBg.png')",
       },
     },
   },
