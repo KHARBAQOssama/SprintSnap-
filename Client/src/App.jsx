@@ -19,6 +19,7 @@ import AllProjects from "./components/dashboard/projects/AllProjects";
 import SingleProject from "./components/dashboard/projects/SingleProject";
 import InvitationConfirmation from "./components/invitation";
 import Listener from "./components/Listener";
+import LandingPage from "./views/LandingPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<LandingPage />}></Route>
         <Route path="/test" element={<Test />}></Route>
         <Route path="/auth" element={<Auth />}>
           <Route path="/auth/login" element={<Login />} />
