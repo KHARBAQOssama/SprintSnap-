@@ -52,7 +52,7 @@ jobs:
           context: ./Server
           file: ./Server/Dockerfile
           push: true
-          tags: server-image:latest
+          tags: ossamakharbaq/sprintsnap:server-latest
 
       - name: Build and push client Docker image
         uses: docker/build-push-action@v5
@@ -60,4 +60,4 @@ jobs:
           context: ./Client
           file: ./Client/Dockerfile
           push: true
-          tags: client-image:latest
+          tags: ossamakharbaq/sprintsnap:client-latest
