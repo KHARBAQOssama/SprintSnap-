@@ -78,7 +78,6 @@ describe("Authentication", () => {
     bcrypt.compare.mockResolvedValue(true);
     jwt.sign.mockReturnValue("mockedToken");
     const response = await request(app).post("/auth/login").send(body);
-    console.log(response.body);
     expect(response.status).toBe(200);
     expect(response.body).toMatchObject(expect.any(Object));
   });
