@@ -1,7 +1,7 @@
 import React from "react";
 import { randomColorGenerator } from "../../../utils/functions";
 
-const MembersDisplayer = ({ members }) => {
+const MembersDisplayer = ({ members, ml }) => {
   return (
     <>
       
@@ -10,7 +10,7 @@ const MembersDisplayer = ({ members }) => {
             key={index}
             className={`w-[30px] h-[30px] absolute rounded-full overflow-hidden shadow cursor-pointer hover:bg-white hover:z-10 ${
               !member.image_url ? "flex items-center justify-center" : ""
-            }`}
+            } ${ml?ml:''}`}
             style={{
               left: `${index * 18}px`,
               // zIndex: project.team.members.length - index,
