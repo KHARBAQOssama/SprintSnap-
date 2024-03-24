@@ -5,6 +5,8 @@ import {
   changeTaskStatusFulfilled,
   createProjectFulfilled,
   createProjectRejected,
+  deleteTaskFulfilled,
+  deleteTaskRejected,
   createTaskFulfilled,
   createTaskRejected,
   deleteProjectFulfilled,
@@ -26,6 +28,8 @@ const initialState = {
   message: "",
   status: null,
   isDeleted : false,
+  taskDeleted : false,
+  totalTasks : 0,
 };
 
 export const getAll = createAsyncThunk(
@@ -106,6 +110,17 @@ export const deleteProject = createAsyncThunk(
     }
   }
 );
+export const deleteTask = createAsyncThunk(
+  "project/deleteTask",
+  async (data, thunkAPI) => {
+    try {
+      const response = await projectService.deleteTask(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
 
 export const projectSlice = createSlice({
   name: "project",
@@ -166,6 +181,12 @@ export const projectSlice = createSlice({
       })
       .addCase(changeTaskStatus.fulfilled, (state, action) => {
         changeTaskStatusFulfilled(state, action);
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        deleteTaskFulfilled(state, action);
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
+        deleteTaskRejected(state, action);
       });
   },
 });
