@@ -87,7 +87,7 @@ const Column = ({ status, tasks, setTasks }) => {
         </span>
       </div>
       <div
-        className={`h-max max-h-[70vh] min-h-[10vh] overflow-y-scroll w-full transition-colors ${
+        className={`h-max max-h-[70vh] min-h-[30vh] overflow-y-scroll w-full transition-colors ${
           active ? "bg-gray-200" : "bg-neutral-800/0"
         }`}
         onDrop={handleDragEnd}

@@ -2,8 +2,10 @@ import DropIndicator from "./DropIndicator";
 import { motion } from "framer-motion";
 import ImageIcon from "../../icons/ImageIcon";
 import MembersDisplayer from "../projects/MembersDisplayer";
+import { addTaskToShow } from "../../../../features/appStatus/slice";
+import { useDispatch } from "react-redux";
 const Card = ({ task, handleDragStart }) => {
-  console.log(task);
+  const dispatch = useDispatch();
   return (
     <>
       <DropIndicator beforeId={task._id} column={task.status} />
@@ -12,7 +14,10 @@ const Card = ({ task, handleDragStart }) => {
         layoutId={task._id}
         onDragStart={(e) => handleDragStart(e, task)}
         draggable="true"
-        className="bg-white p-4 rounded-lg relative pb-10"
+        className="bg-white p-4 rounded-lg relative pb-10 cursor-grab active:cursor-grabbing"
+        onClick={() => {
+          dispatch(addTaskToShow(task))
+        }}
       >
         {task.images.length != 0 && (
           <div
