@@ -90,10 +90,12 @@ export const formatTrackingTime = (timestamp) => {
   const seconds = Math.floor(diff);
   const minutes = Math.floor(diff / 60);
   const hours = Math.floor(diff / 3600);
-  if (seconds > 60) {
+  if (seconds >= 60) {
     time.seconds = seconds % 60;
+  } else {
+    time.seconds = seconds;
   }
-  if (minutes > 60) {
+  if (minutes >= 60) {
     time.minutes = minutes % 60;
   } else {
     time.minutes = minutes;
