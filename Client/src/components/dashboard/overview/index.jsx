@@ -1,19 +1,27 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FoldersIcon from "../../icons/FoldersIcon";
 import CheckedBoxIcon from "../../icons/CheckedBoxIcon";
 import UncheckedBox from "../../icons/UncheckedBox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MembersDisplayer from "../projects/MembersDisplayer";
+import { formatTimestamp } from "../../../utils/functions";
+import { useEffect } from "react";
+import { getAll } from "../../../../features/activity/slice";
 
 const Overview = () => {
   const teams = [1, 2, 3, 4, 5];
   const { user } = useSelector((state) => state.auth);
-  const { projects, isLoading } = useSelector((state) => state.project);
+  const { activities } = useSelector((state) => state.activity);
+  const { projects, isLoading, totalTasks } = useSelector(
+    (state) => state.project
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClick = (_id) => {
     console.log(_id);
     navigate(`/dashboard/projects/${_id}`);
   };
+  useEffect(()=>{dispatch(getAll())},[])
   return (
     <div className="w-full h-full overflow-y-scroll flex flex-col gap-4 ">
       <div>
@@ -47,16 +55,16 @@ const Overview = () => {
         </div>
         <div className="flex-1 min-w-max p-6 bg-white shadow-xl shadow-gray-100 rounded-xl flex items-center">
           <div className="flex-1 min-w-max flex flex-col gap-5">
-            <span className="font-semibold">total Task done</span>
-            <div>
+            <span className="font-semibold">Total Tasks </span>
+            {/* <div>
               <div className="h-2 bg-gray-100 rounded overflow-hidden">
                 <div className="h-full bg-blue-400 w-2/3 rounded"></div>
               </div>
               <span className="font-light text-sm">76 left from target</span>
-            </div>
+            </div> */}
           </div>
           <div className="p-6">
-            <span className="text-xl font-bold">24</span>
+            <span className="text-xl font-bold">{totalTasks}</span>
           </div>
         </div>
         <div className="group flex-1 p-6 bg-white shadow-xl shadow-gray-100 rounded-xl hover:bg-blue-500 transition-all text-blue-500 hover:text-white flex items-center gap-3">
@@ -69,9 +77,14 @@ const Overview = () => {
       <section>
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Projects</h2>
-          {!isLoading && projects.length != 0 &&<span className="text-sm text-gray-400 cursor-pointer hover:text-blue-500">
-            View All
-          </span>}
+          {!isLoading && projects.length != 0 && (
+            <Link
+              to={"/dashboard/projects"}
+              className="text-sm text-gray-400 cursor-pointer hover:text-blue-500"
+            >
+              View All
+            </Link>
+          )}
         </div>
         {projects.length != 0 && (
           <div className="py-3 flex gap-3 flex-wrap">
@@ -109,151 +122,67 @@ const Overview = () => {
       <section className="max-h-[80vh] flex flex-col gap-4 text-sm">
         <div className="flex items-center justify-between w-full">
           <h2 className="text-lg font-semibold">Activities</h2>
-          <span className="text-sm text-gray-400 cursor-pointer hover:text-blue-500">
+          <Link
+            to={"/dashboard/activities"}
+            className="text-sm text-gray-400 cursor-pointer hover:text-blue-500"
+          >
             View All
-          </span>
+          </Link>
         </div>
         <div className="overflow-y-scroll flex-1 flex flex-col gap-1">
-          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
-            <div>
-              {false ? (
-                <CheckedBoxIcon className={"h-5 w-5"} />
-              ) : (
-                <UncheckedBox className={"h-5 w-5"} />
-              )}
-            </div>
-            <div className="relative">
-              <div
-                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon12.png')`,
-                }}
-              ></div>
-              <div
-                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon22.png')`,
-                }}
-              ></div>
-            </div>
-            <div className="">
-              <p className="text-gray-500">
-                <span
-                  className="text-black font-semibold
+          {activities.length != 0 &&
+            activities.map((activity, index) => (
+              <>
+                {index < 4 && (
+                  <div className="flex items-center px-4 rounded bg-blue-100 gap-3 py-2">
+                    <div className="relative">
+                      <div
+                        className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
+                        style={{
+                          backgroundImage: `url('${activity.project.icon}')`,
+                        }}
+                      ></div>
+                      <div
+                        className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border-2 border-white bg-black"
+                        style={{
+                          backgroundImage: `url('${
+                            activity.by.image
+                              ? activity.by.image
+                              : "/images/defaultProfile.png"
+                          }')`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="">
+                      <p className="text-gray-500">
+                        <span
+                          className="text-black font-semibold
               "
-                >
-                  Ossama Kharbaq
-                </span>{" "}
-                has change the task status of a task from to do to in progress
-              </p>
-              <p className="text-gray-400 font-light">today at 12:00 pm </p>
-            </div>
-          </div>
-          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
-            <div>
-              {true ? (
-                <CheckedBoxIcon className={"h-5 w-5"} />
-              ) : (
-                <UncheckedBox className={"h-5 w-5"} />
-              )}
-            </div>
-            <div className="relative">
-              <div
-                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon18.png')`,
-                }}
-              ></div>
-              <div
-                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon134.png')`,
-                }}
-              ></div>
-            </div>
-            <div className="">
-              <p className="text-gray-500">
-                <span
-                  className="text-black font-semibold
-              "
-                >
-                  Ossama Kharbaq
-                </span>{" "}
-                has change the task status of a task from to do to in progress
-              </p>
-              <p className="text-gray-400 font-light">today at 12:00 pm </p>
-            </div>
-          </div>
-          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
-            <div>
-              {true ? (
-                <CheckedBoxIcon className={"h-5 w-5"} />
-              ) : (
-                <UncheckedBox className={"h-5 w-5"} />
-              )}
-            </div>
-            <div className="relative">
-              <div
-                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon94.png')`,
-                }}
-              ></div>
-              <div
-                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon90.png')`,
-                }}
-              ></div>
-            </div>
-            <div className="">
-              <p className="text-gray-500">
-                <span
-                  className="text-black font-semibold
-              "
-                >
-                  Ossama Kharbaq
-                </span>{" "}
-                has change the task status of a task from to do to in progress
-              </p>
-              <p className="text-gray-400 font-light">today at 12:00 pm </p>
-            </div>
-          </div>
-          <div className="flex items-center px-4 rounded bg-blue-100 hover:bg-blue-200 gap-3 py-3">
-            <div>
-              {true ? (
-                <CheckedBoxIcon className={"h-5 w-5"} />
-              ) : (
-                <UncheckedBox className={"h-5 w-5"} />
-              )}
-            </div>
-            <div className="relative">
-              <div
-                className="h-10 w-10 rounded-full bg-center bg-no-repeat bg-cover"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon93.png')`,
-                }}
-              ></div>
-              <div
-                className="h-5 w-5 rounded-full bg-center bg-no-repeat bg-cover absolute right-0 bottom-0 border border-white"
-                style={{
-                  backgroundImage: `url('/images/logos/projectIcon173.png')`,
-                }}
-              ></div>
-            </div>
-            <div className="">
-              <p className="text-gray-500">
-                <span
-                  className="text-black font-semibold
-              "
-                >
-                  Ossama Kharbaq
-                </span>{" "}
-                has change the task status of a task from to do to in progress
-              </p>
-              <p className="text-gray-400 font-light">today at 12:00 pm </p>
-            </div>
-          </div>
+                        >
+                          {activity.by._id != user._id
+                            ? activity.by.first_name +
+                              " " +
+                              activity.by.last_name
+                            : "you"}
+                        </span>{" "}
+                        {activity.by._id != user._id ? "has" : "have"} change
+                        the task status of a task in the{" "}
+                        <Link
+                          to={`/dashboard/projects/${activity.project._id}`}
+                          className="font-semibold text-blue-500"
+                        >
+                          {activity.project.name}
+                        </Link>{" "}
+                        project
+                      </p>
+                      <p className="text-gray-400 font-light text-sm">
+                        {formatTimestamp(activity.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
+            ))}
         </div>
       </section>
     </div>
