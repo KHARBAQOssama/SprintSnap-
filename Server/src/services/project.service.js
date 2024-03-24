@@ -17,7 +17,7 @@ class ProjectService {
             $or: [{ owner: ownerId }, { team: { $in: teamIds } }],
             deleted: false,
           },
-          "_id name icon description"
+          "_id name icon description tasks cover createdAt"
         )
         .populate({
           path: "team",

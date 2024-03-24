@@ -35,6 +35,14 @@ class TaskService {
       throw error;
     }
   };
+  delete = async (id) => {
+    try {
+      await this.model.findOneAndDelete({ _id: id });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 }
 const serviceInstance = new TaskService(Task);
 module.exports = serviceInstance;
