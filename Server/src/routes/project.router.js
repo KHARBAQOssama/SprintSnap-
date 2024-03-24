@@ -32,4 +32,11 @@ router.patch(
   projectController.update
 );
 
+router.delete(
+  "/:id",
+  requireAuth,
+  projectPolicies.canDelete,
+  projectController.delete
+);
+
 module.exports = router;

@@ -34,13 +34,14 @@ class NotificationService {
       const newNotification = await this.model.create(data);
       const contextPopulate = {
         path: "context",
-        model: newNotification.type == "Assignment" ? "Task" : "Invitation",
+        model: newNotification.type == "Task" ? "Task" : "Invitation",
       };
       const notification = await this.model
         .findById(newNotification._id)
         .populate({
           path: "to",
           model: "User",
+          select: "first_name last_name _id email cover icon",
         })
         .populate({
           path: "project",
@@ -49,6 +50,7 @@ class NotificationService {
         .populate({
           path: "by",
           model: "User",
+          select: "first_name last_name _id email cover icon",
         })
         .populate(contextPopulate);
       return notification;

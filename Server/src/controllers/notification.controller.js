@@ -16,13 +16,17 @@ class NotificationController {
     try {
       const notification = await this.service.create(data);
       if (notification) {
-        if (userSocketMap.has(notification.to[0]._id.toString())) {
-          const socketId = userSocketMap.get(notification.to[0]._id.toString());
-          const io = req.app.get("socketIo");
-          
-          let sent = io.to(socketId).emit("notification", notification);
-          console.log('sent',sent, notification);
-        }
+        console.log(notification.to[0]._id.toString());
+        notification.to.forEach((target) => {
+          console.log(userSocketMap.has(target._id.toString()));
+          if (userSocketMap.has(target._id.toString())) {
+            const socketId = userSocketMap.get(target._id.toString());
+            const io = req.app.get("socketIo");
+
+            let sent = io.to(socketId).emit("notification", notification);
+            
+          }
+        });
       }
       return notification;
     } catch (error) {}

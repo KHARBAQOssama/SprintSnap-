@@ -7,7 +7,7 @@ const notificationSchema = new mongoose.Schema(
     context: { type: mongoose.Schema.Types.ObjectId },
     type: {
       type: String,
-      enum: ["Invitation", "Assignment"],
+      enum: ["Invitation", "Task"],
     },
     by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },

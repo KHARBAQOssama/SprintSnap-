@@ -15,6 +15,7 @@ class ProjectService {
         .find(
           {
             $or: [{ owner: ownerId }, { team: { $in: teamIds } }],
+            deleted: false,
           },
           "_id name icon description"
         )
@@ -37,7 +38,10 @@ class ProjectService {
   getOne = async (_id) => {
     try {
       const projects = await this.model
-        .findById(_id)
+        .findOne({
+          _id: _id,
+          deleted: false,
+        })
         .populate({
           path: "team",
           model: "Team",
@@ -55,7 +59,7 @@ class ProjectService {
             model: "User",
             select: "first_name last_name _id",
           },
-          select : "-__v "
+          select: "-__v ",
         });
 
       return projects;
@@ -86,6 +90,20 @@ class ProjectService {
       let project = await this.model.findByIdAndUpdate(data._id, data, {
         new: true,
       });
+      return await this.getOne(project._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  delete = async (_id) => {
+    try {
+      let project = await this.model.findByIdAndUpdate(
+        _id,
+        { deleted: true },
+        {
+          new: true,
+        }
+      );
       return await this.getOne(project._id);
     } catch (error) {
       console.log(error);
