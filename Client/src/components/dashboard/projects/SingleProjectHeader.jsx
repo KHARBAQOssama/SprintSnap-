@@ -9,15 +9,37 @@ import TimeIcon from "../../icons/TimeIcon";
 import api from "../../../api";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProject } from "../../../../features/appStatus/slice";
-import { reset } from "../../../../features/project/slice";
+import {
+  deleteProject,
+  getAll,
+  reset,
+} from "../../../../features/project/slice";
+import OutsideClickHandler from "../../../widgets/OutsideClickHandler";
 import MembersDisplayer from "./MembersDisplayer";
+import { useNavigate } from "react-router-dom";
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 const TopHead = ({ project }) => {
+  const [optionsOpen, setOptionsOpen] = useState(false);
   const dispatch = useDispatch();
+  const { isDeleted } = useSelector((state) => state.project);
   const openUpdateModal = () => {
     dispatch(reset());
     dispatch(updateProject());
   };
+  const handleDelete = () => {
+    dispatch(deleteProject(project._id));
+  };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isDeleted) {
+      dispatch(reset());
+      dispatch(getAll());
+      navigate("/dashboard");
+    }
+  }, [isDeleted, navigate]);
+
   return (
     <div className="flex gap-2 items-baseline">
       <div className="flex gap-2 items-center">
@@ -30,9 +52,28 @@ const TopHead = ({ project }) => {
       <button className="ms-auto" onClick={openUpdateModal}>
         <EditIcon />
       </button>
-      <button>
-        <MoreIcon />
-      </button>
+      <OutsideClickHandler
+        onOutsideClick={() => {
+          setOptionsOpen(false);
+          console.log("hi");
+        }}
+      >
+        <div className="relative">
+          <button className="py-2" onClick={() => setOptionsOpen(true)}>
+            <MoreIcon />
+          </button>
+          {optionsOpen && (
+            <div className="absolute right-0 bg-white shadow p-2  w-[150px] top-[125%] rounded-lg">
+              <button
+                onClick={handleDelete}
+                className="text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 w-full text-start rounded"
+              >
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+      </OutsideClickHandler>
     </div>
   );
 };

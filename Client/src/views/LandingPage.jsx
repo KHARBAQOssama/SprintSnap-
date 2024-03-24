@@ -1,9 +1,10 @@
 import React from "react";
 import Logo from "../components/common/Logo";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { isAuthenticated } from "../middlewares";
 
 const LandingPage = () => {
-  return (
+  return isAuthenticated() ? <Navigate to="/dashboard" /> : (
     <section className="h-full overflow-x-scroll bg-landing bg-no-repeat bg-cover">
       <nav className="flex items-center px-12 justify-between py-2 border-b">
         <Logo className={"h-12"} />
@@ -179,5 +180,7 @@ const LandingPage = () => {
     </section>
   );
 };
+
+
 
 export default LandingPage;

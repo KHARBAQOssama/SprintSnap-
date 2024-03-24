@@ -5,9 +5,10 @@ import AddProjectModal from "./AddProjectModal";
 import UpdateProjectModal from "./UpdateProjectModal";
 import AddTaskModal from "./AddTaskModal";
 import OutsideClickHandler from "../../../widgets/OutsideClickHandler";
+import ShowTask from "./ShowTask";
 
 const ModalContentRenderer = () => {
-  const { addingProject, addingTask, updatingProject } = useSelector(
+  const { addingProject, addingTask, updatingProject, showingTask } = useSelector(
     (state) => state.appStatus
   );
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const ModalContentRenderer = () => {
       <UpdateProjectModal />
     ) : addingTask ? (
       <AddTaskModal />
+    ) : showingTask ? (
+      <ShowTask />
     ) : (
       <></>
     )
