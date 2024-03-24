@@ -1,12 +1,15 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "../../common/Logo";
 import SidebarProjects from "./SidebarProjects";
 import sidebarItems from "../../../widgets/sidebarItems";
 import SidebarItems from "./SidebarItems";
+import LogoutIcon from "../../icons/LogoutIcon";
 import { randomColorGenerator } from "../../../utils/functions";
+import { logout } from "../../../../features/auth/slice";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const sideItem = sidebarItems[0];
   return (
     <aside className="bg-white min-h-[100vh] min-w-[256px] w-[16em] p-[1em] px-[1.6em] border-r flex flex-col">
@@ -37,6 +40,9 @@ const Sidebar = () => {
             <span className="text-gray-400 text-xs font-light w-[15ch] overflow-hidden whitespace-nowrap text-ellipsis">{`${user.email}`}</span>
           </div>
         )}
+        <button onClick={() => dispatch(logout())}>
+          <LogoutIcon className={"h-5 w-5"} />
+        </button>
       </div>
     </aside>
   );

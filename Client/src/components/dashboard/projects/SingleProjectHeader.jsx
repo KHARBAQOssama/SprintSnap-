@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { formatDate, randomColorGenerator } from "../../../utils/functions";
+import {
+  formatDate,
+  formatTrackingTime,
+  randomColorGenerator,
+} from "../../../utils/functions";
 import EditIcon from "../../icons/EditIcon";
 import MoreIcon from "../../icons/MoreIcon";
 import PlusIcon from "../../icons/PlusIcon";
@@ -21,8 +25,11 @@ const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const TopHead = ({ project }) => {
   const [optionsOpen, setOptionsOpen] = useState(false);
+
   const dispatch = useDispatch();
   const { isDeleted } = useSelector((state) => state.project);
+  const { user } = useSelector((state) => state.auth);
+
   const openUpdateModal = () => {
     dispatch(reset());
     dispatch(updateProject());
@@ -49,35 +56,45 @@ const TopHead = ({ project }) => {
         ></div>
         <span className="font-semibold text-xl ">{project.name}</span>
       </div>
-      <button className="ms-auto" onClick={openUpdateModal}>
-        <EditIcon />
-      </button>
-      <OutsideClickHandler
-        onOutsideClick={() => {
-          setOptionsOpen(false);
-          console.log("hi");
-        }}
-      >
-        <div className="relative">
-          <button className="py-2" onClick={() => setOptionsOpen(true)}>
-            <MoreIcon />
+      {project && user._id == project.owner && (
+        <>
+          <button className="ms-auto" onClick={openUpdateModal}>
+            <EditIcon />
           </button>
-          {optionsOpen && (
-            <div className="absolute right-0 bg-white shadow p-2  w-[150px] top-[125%] rounded-lg">
-              <button
-                onClick={handleDelete}
-                className="text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 w-full text-start rounded"
-              >
-                Delete
+          <OutsideClickHandler
+            onOutsideClick={() => {
+              setOptionsOpen(false);
+              console.log("hi");
+            }}
+          >
+            <div className="relative">
+              <button className="py-2" onClick={() => setOptionsOpen(true)}>
+                <MoreIcon />
               </button>
+              {optionsOpen && (
+                <div className="absolute right-0 bg-white shadow p-2  w-[150px] top-[125%] rounded-lg">
+                  <button
+                    onClick={handleDelete}
+                    className="text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 w-full text-start rounded"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </OutsideClickHandler>
+          </OutsideClickHandler>
+        </>
+      )}
     </div>
   );
 };
 const Cover = ({ project }) => {
+  const [trackingTime, setTrackingTime] = useState(
+    formatTrackingTime(project.createdAt)
+  );
+  useEffect(() => {
+    setTrackingTime(formatTrackingTime(project.createdAt));
+  }, [trackingTime]);
   return (
     <div
       className="my-2 rounded-xl p-10 bg-cover bg-no-repeat bg-center pt-28"
@@ -96,20 +113,30 @@ const Cover = ({ project }) => {
               {project.name}
             </span>
           </div>
-          <div
-            className="flex gap-6 ms-auto bg-opacity-20 rounded p-3 bg-white "
-            // style={{
-            //   backgroundImage:
-            //     "linear-gradient(to bottom , #00000040, #FFFFFF40)",
-            // }}
-          >
+          <div className="flex gap-6 ms-auto bg-opacity-70 rounded p-3 bg-white ">
             <div className="flex flex-col">
-              <span className="text-gray">CREATED</span>
-              <span className="">{formatDate(project.createdAt)}</span>
+              <span className="text-blue-700 font-semibold">CREATED</span>
+              <span className="text-gray-700 text-sm">
+                {formatDate(project.createdAt)}
+              </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-gray">TRACKED TIME</span>
-              <span className=""> -- : -- </span>
+              <span className="text-blue-700 font-semibold">TRACKED TIME</span>
+              <span className="text-gray-700 text-sm">
+                {`${
+                  trackingTime.hours < 10
+                    ? "0" + trackingTime.hours
+                    : trackingTime.hours
+                }:${
+                  trackingTime.minutes < 10
+                    ? "0" + trackingTime.minutes
+                    : trackingTime.minutes
+                }:${
+                  trackingTime.seconds < 10
+                    ? "0" + trackingTime.seconds
+                    : trackingTime.seconds
+                }`}
+              </span>
             </div>
           </div>
         </div>
@@ -281,7 +308,7 @@ const InviteButton = ({ inviteFormOpen, toggleForm, project }) => {
 };
 const ProjectInfo = ({ project }) => {
   const [inviteFormOpen, setInviteFormOpen] = useState(false);
-  // const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.auth);
   const toggleForm = () => setInviteFormOpen(!inviteFormOpen);
   return (
     <div className="flex gap-4 py-3 px-2 border-b bg-white">
@@ -328,11 +355,13 @@ const ProjectInfo = ({ project }) => {
               </div>
             ))} */}
             <MembersDisplayer members={project.team.members} />
-            <InviteButton
-              inviteFormOpen={inviteFormOpen}
-              project={project}
-              toggleForm={toggleForm}
-            />
+            {project && user._id == project.owner && (
+              <InviteButton
+                inviteFormOpen={inviteFormOpen}
+                project={project}
+                toggleForm={toggleForm}
+              />
+            )}
           </div>
         </div>
         <div className="flex gap-2 items-center">
