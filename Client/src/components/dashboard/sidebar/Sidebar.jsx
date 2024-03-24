@@ -36,7 +36,7 @@ const Sidebar = () => {
         </div>
         {user && (
           <div className="flex flex-col py-2">
-            <span className=" font-medium text-gray-500 text-sm">{`${user.first_name} ${user.last_name}`}</span>
+            <span className=" font-medium text-gray-500 text-sm max-w-[12ch] truncate">{`${user.first_name} ${user.last_name}`}</span>
             <span className="text-gray-400 text-xs font-light w-[15ch] overflow-hidden whitespace-nowrap text-ellipsis">{`${user.email}`}</span>
           </div>
         )}
