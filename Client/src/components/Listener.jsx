@@ -5,17 +5,21 @@ import socketIOClient from "socket.io-client";
 import BellIcon from "./icons/BellIcon";
 import NotificationsHolder from "./custom/Notification";
 import OutsideClickHandler from "../widgets/OutsideClickHandler";
-import { getNotifications, setNotification } from "../../features/notification/slice";
+import {
+  getNotifications,
+  setNotification,
+} from "../../features/notification/slice";
+import { getProject } from "../../features/project/slice";
 const ENDPOINT = "http://localhost:3000";
 
 function Listener() {
   const [notifOpen, setNotifOpen] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { activeProject } = useSelector((state) => state.project);
   const { notifications } = useSelector((state) => state.notification);
   useEffect(() => {
     if (user) {
-      
       const socket = socketIOClient(ENDPOINT);
       console.log(user._id);
       socket.on("connect", () => {
@@ -24,8 +28,15 @@ function Listener() {
       });
 
       socket.on("notification", (notification) => {
-        console.log(notification);
-        dispatch(setNotification(notification))
+        dispatch(setNotification(notification));
+        if (
+          notification.type == "Task" &&
+          activeProject._id == notification.project._id
+        ) {
+          console.log(notification);
+          console.log("hii");
+          dispatch(getProject(activeProject._id));
+        }
       });
       socket.on("invitation", ({ invitation }) => {
         console.log("Received notification:", invitation);
@@ -43,9 +54,7 @@ function Listener() {
     <>
       <div className="absolute bottom-8 right-8">
         <div className="relative">
-          {notifOpen && (
-            <NotificationsHolder notifications={notifications} />
-          )}
+          {notifOpen && <NotificationsHolder notifications={notifications} />}
           <OutsideClickHandler onOutsideClick={() => setNotifOpen(false)}>
             <button
               className="p-2 rounded-full shadow bg-white relative"
