@@ -28,7 +28,7 @@ describe("Create Project", () => {
   it("should verify that required fields are full", async () => {
     const body = {};
 
-    jwt.verify = jest.fn().mockReturnValue({ _id: 123 });
+    jwt.verify = jest.fn().mockReturnValue({ _id: "65f8d2e837ef8171ce86a78d" });
     const response = await request(app)
       .post("/project")
       .set("Cookie", `accessToken=token`)
@@ -38,7 +38,7 @@ describe("Create Project", () => {
     expect(Array.isArray(response.body.errors)).toBeTruthy();
   });
 
-  it("should verify that required fields are full", async () => {
+  it("should create the project", async () => {
     const body = {
       name: "project",
       description: "project Description",
@@ -47,9 +47,9 @@ describe("Create Project", () => {
       icon: "icon",
     };
 
-    jwt.verify = jest.fn().mockReturnValue({ _id: 123 });
+    jwt.verify = jest.fn().mockReturnValue({ _id: '123' });
     teamControllerInstance.create = jest.fn().mockResolvedValue({});
-    pService.create = jest.fn().mockResolvedValue({ _id: 123456 });
+    pService.create = jest.fn().mockResolvedValue({ _id: '123456' });
 
     const response = await request(app)
       .post("/project")
