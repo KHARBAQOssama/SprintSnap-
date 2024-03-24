@@ -7,6 +7,13 @@ export const getAllFulfilled = (state, action) => {
   state.isLoading = false;
   state.isSuccess = true;
   state.projects = action.payload;
+  console.log(action.payload);
+  let total = 0;
+
+  action.payload.forEach((project) => {
+    total += project.tasks.length;
+  });
+  state.totalTasks = total;
 };
 export const getAllRejected = (state, action) => {
   if (action.payload.status == 401) {
@@ -103,6 +110,21 @@ export const deleteProjectFulfilled = (state, action) => {
   state.isDeleted = true;
 };
 export const deleteProjectRejected = (state, action) => {
+  console.log(action);
+  // if (action.payload.status == 401) {
+  //   console.log("hello");
+  //   state.status = action.payload.status;
+  // } else {
+  //   state.message = action.payload.data.message;
+  // }
+  // state.isLoading = false;
+  // state.isError = true;
+};
+export const deleteTaskFulfilled = (state, action) => {
+  toast.success(action.payload.message);
+  state.taskDeleted = true;
+};
+export const deleteTaskRejected = (state, action) => {
   console.log(action);
   // if (action.payload.status == 401) {
   //   console.log("hello");

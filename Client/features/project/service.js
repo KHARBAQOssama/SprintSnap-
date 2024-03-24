@@ -23,6 +23,10 @@ const deleteProject = async (data) => {
   const response = await api.delete(`/project/${data}`);
   return response.data;
 };
+const deleteTask = async (data) => {
+  const response = await api.delete(`/task/${data}`);
+  return response.data;
+};
 const createTask = async (data) => {
   const response = await api.post("/task", data);
   return response.data;
@@ -41,6 +45,7 @@ const projectService = {
   createTask,
   changeTaskStatus,
   deleteProject,
+  deleteTask
 };
 
 export default projectService;
