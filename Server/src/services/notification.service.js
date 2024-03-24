@@ -1,3 +1,4 @@
+const Activity = require("../models/activity.model");
 const Notification = require("../models/notification.model");
 
 class NotificationService {
@@ -31,29 +32,50 @@ class NotificationService {
   };
   create = async (data) => {
     try {
-      const newNotification = await this.model.create(data);
-      const contextPopulate = {
-        path: "context",
-        model: newNotification.type == "Task" ? "Task" : "Invitation",
-      };
-      const notification = await this.model
-        .findById(newNotification._id)
-        .populate({
-          path: "to",
-          model: "User",
-          select: "first_name last_name _id email cover icon",
-        })
-        .populate({
-          path: "project",
-          model: "Project",
-        })
-        .populate({
-          path: "by",
-          model: "User",
-          select: "first_name last_name _id email cover icon",
-        })
-        .populate(contextPopulate);
-      return notification;
+      if (data.type == "Activity") {
+        const newActivity = await Activity.create(data);
+        const activity = await Activity
+          .findById(newActivity._id)
+          .populate({
+            path: "to",
+            model: "User",
+            select: "first_name last_name _id email cover icon",
+          })
+          .populate({
+            path: "project",
+            model: "Project",
+          })
+          .populate({
+            path: "by",
+            model: "User",
+            select: "first_name last_name _id email cover icon",
+          })
+          return activity
+      }else{
+          const newNotification = await this.model.create(data);
+          const notification = await this.model
+            .findById(newNotification._id)
+            .populate({
+              path: "to",
+              model: "User",
+              select: "first_name last_name _id email cover icon",
+            })
+            .populate({
+              path: "project",
+              model: "Project",
+            })
+            .populate({
+              path: "by",
+              model: "User",
+              select: "first_name last_name _id email cover icon",
+            })
+            .populate({
+              path: "context",
+              model: "Invitation",
+            });
+          return notification;
+      }
+      
     } catch (error) {
       console.log(error);
     }

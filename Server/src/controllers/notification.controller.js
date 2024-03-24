@@ -16,7 +16,6 @@ class NotificationController {
     try {
       const notification = await this.service.create(data);
       if (notification) {
-        console.log(notification.to[0]._id.toString());
         notification.to.forEach((target) => {
           console.log(userSocketMap.has(target._id.toString()));
           if (userSocketMap.has(target._id.toString())) {
