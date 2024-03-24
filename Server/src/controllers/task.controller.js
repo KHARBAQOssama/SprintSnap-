@@ -54,7 +54,7 @@ class TaskController {
       const { id } = req.params;
       const { status } = req.body;
       const task = await this.service.changeStatus(id, status);
-      if (task ){
+      if (task) {
         const project = await Project.findById(task.project).populate({
           path: "team",
           model: "Team",
@@ -64,9 +64,9 @@ class TaskController {
           {
             to: project.team.members,
             by: req.user._id,
-            project : task.project,
-            type: "Task",
-            context: task._id,
+            project: task.project,
+            action: "ChangeStatus",
+            type: "Activity",
           },
           req
         );
@@ -76,6 +76,15 @@ class TaskController {
         .json({ message: "task updated successfully", task });
     } catch (error) {
       console.log(error);
+    }
+  };
+  delete = async (req, res) => {
+    const { id } = req.params;
+    try {
+      await this.service.delete(id);
+      return res.status(200).json({ message: "task deleted successfully" });
+    } catch (error) {
+      return res.status(500).json({ message: "something went wrong", error });
     }
   };
 }
