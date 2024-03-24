@@ -10,12 +10,13 @@ import {
   setNotification,
 } from "../../features/notification/slice";
 import { getProject } from "../../features/project/slice";
+import { toast } from "react-toastify";
 const ENDPOINT = "http://localhost:3000";
 
 function Listener() {
   const [notifOpen, setNotifOpen] = useState(false);
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, logoutSuccess } = useSelector((state) => state.auth);
   const { activeProject } = useSelector((state) => state.project);
   const { notifications } = useSelector((state) => state.notification);
   useEffect(() => {
@@ -28,14 +29,18 @@ function Listener() {
       });
 
       socket.on("notification", (notification) => {
-        dispatch(setNotification(notification));
+        console.log(activeProject._id == notification.project._id);
         if (
-          notification.type == "Task" &&
+          notification.action == "ChangeStatus" &&
           activeProject._id == notification.project._id
         ) {
-          console.log(notification);
-          console.log("hii");
+          if (user._id != notification.by._id)
+            toast.info(
+              `${notification.by.first_name} has change a task status in the project '${notification.project.name}'`
+            );
           dispatch(getProject(activeProject._id));
+        } else {
+          dispatch(setNotification(notification));
         }
       });
       socket.on("invitation", ({ invitation }) => {
@@ -50,6 +55,11 @@ function Listener() {
   useEffect(() => {
     if (!notifications.length) dispatch(getNotifications());
   }, []);
+  useState(() => {
+    if (logoutSuccess) {
+      console.log("loggedOut");
+    }
+  }, [logoutSuccess]);
   return (
     <>
       <div className="absolute bottom-8 right-8">

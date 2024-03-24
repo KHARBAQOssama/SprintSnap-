@@ -6,7 +6,7 @@ const InvitationNotification = ({ notification }) => {
   console.log(notification.context);
   return (
     <Link
-      to={`/invitation/${notification.context._id}/confirm`}
+      to={`/invitation/${notification.context}/confirm`}
       className="p-2 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer flex flex-col gap-2"
     >
       <div className="flex items-center gap-3">
