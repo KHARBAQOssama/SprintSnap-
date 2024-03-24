@@ -15,6 +15,9 @@ const SingleProject = () => {
   const { activeProject, isLoading, isError } = useSelector(
     (state) => state.project
   );
+
+  const { user } = useSelector((state) => state.auth);
+  const { taskDeleted } = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const openAddTaskModal = () => {
     dispatch(reset());
@@ -24,12 +27,12 @@ const SingleProject = () => {
     if (id) {
       dispatch(getProject(id));
     }
-  }, [id]);
-  // useEffect(() => {
-  //   if (isError) {
-  //     dispatch(getProject(id));
-  //   }
-  // }, [isError]);
+  }, [id, taskDeleted]);
+  useEffect(() => {
+    if (isError) {
+      dispatch(getProject(id));
+    }
+  }, [isError]);
   return (
     <>
       {!activeProject && !isLoading ? (
@@ -69,14 +72,16 @@ const SingleProject = () => {
                 />
                 <span>Kanban</span>
               </button>
-              {activePage == "backlog" && (
-                <button
-                  onClick={openAddTaskModal}
-                  className="ms-auto px-2 bg-blue-200 text-blue-600 rounded-lg text-xl font-medium"
-                >
-                  +
-                </button>
-              )}
+              {activeProject &&
+                user._id == activeProject.owner &&
+                activePage == "backlog" && (
+                  <button
+                    onClick={openAddTaskModal}
+                    className="ms-auto px-2 bg-blue-200 text-blue-600 rounded-lg text-xl font-medium"
+                  >
+                    +
+                  </button>
+                )}
             </div>
             {activePage == "backlog" && (
               <Backlog activeProject={activeProject} />
