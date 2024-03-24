@@ -16,7 +16,11 @@ const updateProject = async (data) => {
 };
 const getProject = async (data) => {
   const response = await api.get(`/project/${data}`, data);
-  console.log(response);
+  // console.log(response);
+  return response.data;
+};
+const deleteProject = async (data) => {
+  const response = await api.delete(`/project/${data}`);
   return response.data;
 };
 const createTask = async (data) => {
@@ -36,6 +40,7 @@ const projectService = {
   updateProject,
   createTask,
   changeTaskStatus,
+  deleteProject,
 };
 
 export default projectService;
