@@ -19,10 +19,6 @@ const login = async (userData) => {
 
 const logout = async () => {
   const response = await api.post("/auth/logout");
-  console.log(response);
-  if (response.status == 200) {
-    localStorage.removeItem("user");
-  }
   return response.data;
 };
 
