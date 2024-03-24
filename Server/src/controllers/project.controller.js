@@ -18,6 +18,7 @@ class ProjectController {
   getOne = async (req, res) => {
     try {
       let project = await this.service.getOne(req.params.id);
+      if(!project) return res.status(404).json({message : "project not found"})
       const invitationService = new InvitationService(Invitation);
       const invitations = await invitationService.getByProject(project._id);
 
@@ -51,10 +52,19 @@ class ProjectController {
   update = async (req, res) => {
     try {
       const project = await this.service.update(req.body);
-      console.log(project);
       return res
         .status(200)
         .json({ message: "project updated successfully", project });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  delete = async (req, res) => {
+    try {
+      const project = await this.service.delete(req.params.id);
+      return res
+        .status(200)
+        .json({ message: "project deleted successfully" });
     } catch (error) {
       console.log(error);
     }

@@ -8,7 +8,7 @@ import MembersDisplayer from "../projects/MembersDisplayer";
 const Overview = () => {
   const teams = [1, 2, 3, 4, 5];
   const { user } = useSelector((state) => state.auth);
-  const { projects } = useSelector((state) => state.project);
+  const { projects, isLoading } = useSelector((state) => state.project);
   const navigate = useNavigate();
   const handleClick = (_id) => {
     console.log(_id);
@@ -69,35 +69,42 @@ const Overview = () => {
       <section>
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Projects</h2>
-          <span className="text-sm text-gray-400 cursor-pointer hover:text-blue-500">
+          {!isLoading && projects.length != 0 &&<span className="text-sm text-gray-400 cursor-pointer hover:text-blue-500">
             View All
-          </span>
+          </span>}
         </div>
-        <div className="py-3 flex gap-3 flex-wrap">
-          {projects.map((project, index) =>
-            index < 3 ? (
-              <div
-                className="p-4 flex-1 flex flex-col gap-3 border bg-white shadow-xl shadow-gray-100 max-w-[300px] hover:shadow-green-200 cursor-pointer"
-                onClick={() => handleClick(project._id)}
-              >
-                <div className="flex gap-3 item">
-                  <img src={project.icon} className="w-8 h-8" alt="" />
-                  <span className="text-lg font-semibold  w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
-                    {project.name}
-                  </span>
+        {projects.length != 0 && (
+          <div className="py-3 flex gap-3 flex-wrap">
+            {projects.map((project, index) =>
+              index < 3 ? (
+                <div
+                  className="p-4 flex-1 flex flex-col gap-3 border bg-white shadow-xl shadow-gray-100 max-w-[300px] hover:shadow-green-200 cursor-pointer"
+                  onClick={() => handleClick(project._id)}
+                >
+                  <div className="flex gap-3 item">
+                    <img src={project.icon} className="w-8 h-8" alt="" />
+                    <span className="text-lg font-semibold  w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
+                      {project.name}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500 w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
+                    {project.description}
+                  </p>
+                  <div className="flex relative h-4 mb-2">
+                    <MembersDisplayer members={project.team.members} />
+                  </div>
                 </div>
-                <p className="text-sm text-gray-500 w-[25ch] overflow-hidden text-ellipsis whitespace-nowrap">
-                  {project.description}
-                </p>
-                <div className="flex relative h-4 mb-2">
-                  <MembersDisplayer members={project.team.members} />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )
-          )}
-        </div>
+              ) : (
+                <></>
+              )
+            )}
+          </div>
+        )}
+        {!isLoading && projects.length == 0 && (
+          <div className="flex justify-center">
+            <img src="/images/noProjects1.jpg" className="h-72" alt="" />
+          </div>
+        )}
       </section>
       <section className="max-h-[80vh] flex flex-col gap-4 text-sm">
         <div className="flex items-center justify-between w-full">

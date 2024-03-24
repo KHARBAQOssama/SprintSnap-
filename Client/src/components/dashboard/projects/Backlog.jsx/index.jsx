@@ -6,7 +6,10 @@ const Backlog = ({ activeProject }) => {
     <div className="py-2 flex flex-col gap-1">
       {activeProject?.tasks.length != 0 &&
         activeProject?.tasks.map((task) => (
-          <div className="group  overflow-hidden bg-gray-100 rounded-xl hover:bg-blue-100 flex">
+          <div
+            key={task._id}
+            className="group  overflow-hidden bg-gray-100 rounded-xl hover:bg-blue-100 flex"
+          >
             <div className="flex-1 flex items-center p-2 px-4 gap-6">
               <div className="flex-1">
                 <p className="font-semibold text-sm">{task.name}</p>
@@ -31,4 +34,4 @@ const Backlog = ({ activeProject }) => {
   );
 };
 
-export default Backlog
+export default Backlog;

@@ -2,18 +2,13 @@ const { userSocketMap } = require("../config/socket.config");
 const Project = require("../models/project.model");
 const TaskServiceInstance = require("../services/task.Service");
 const { storeFileGetPath, storeImageGetPath } = require("../utils/tools");
+const notificationControllerInstance = require("./notification.controller");
 
 class TaskController {
   service;
   constructor(Service) {
     this.service = Service;
   }
-  //   getAll = async (req, res) => {
-  //     try {
-  //       const Tasks = await this.service.getAll(req.user._id);
-  //       return res.status(200).json({ Tasks });
-  //     } catch (error) {}
-  //   };
   create = async (req, res) => {
     try {
       const files = await Promise.all(
@@ -59,6 +54,23 @@ class TaskController {
       const { id } = req.params;
       const { status } = req.body;
       const task = await this.service.changeStatus(id, status);
+      if (task ){
+        const project = await Project.findById(task.project).populate({
+          path: "team",
+          model: "Team",
+        });
+
+        notificationControllerInstance.create(
+          {
+            to: project.team.members,
+            by: req.user._id,
+            project : task.project,
+            type: "Task",
+            context: task._id,
+          },
+          req
+        );
+      }
       return res
         .status(201)
         .json({ message: "task updated successfully", task });

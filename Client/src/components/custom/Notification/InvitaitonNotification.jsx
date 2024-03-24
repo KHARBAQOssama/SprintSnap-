@@ -26,7 +26,7 @@ const InvitationNotification = ({ notification }) => {
             className="bg-cover bg-center bg-no-repeat w-5 h-5 rounded-full border-white border-2 mt-auto ms-auto"
             style={{
               backgroundImage: `url('${
-                notification.by.icon || "/icons/defaultProfile.png"
+                notification.by.icon || "/images/defaultProfile.png"
               }')`,
             }}
           ></div>
