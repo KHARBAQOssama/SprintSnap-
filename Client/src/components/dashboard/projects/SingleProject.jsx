@@ -35,7 +35,7 @@ const SingleProject = () => {
   }, [isError]);
   return (
     <>
-      {!activeProject && !isLoading ? (
+      {!activeProject && !isLoading && isError ? (
         <div className="h-full flex items-center justify-center">
           <img src="/images/notfound.jpg" className="h-96" alt="" />
         </div>

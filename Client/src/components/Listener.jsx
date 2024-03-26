@@ -29,7 +29,7 @@ function Listener() {
       });
 
       socket.on("notification", (notification) => {
-        console.log(activeProject._id == notification.project._id);
+        console.log(activeProject);
         if (
           notification.action == "ChangeStatus" &&
           activeProject._id == notification.project._id
@@ -40,7 +40,7 @@ function Listener() {
             );
           dispatch(getProject(activeProject._id));
         } else {
-          dispatch(setNotification(notification));
+          dispatch(getNotifications());
         }
       });
       socket.on("invitation", ({ invitation }) => {

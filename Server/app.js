@@ -32,11 +32,7 @@ const { initializeSocket } = require("./src/config/socket.config");
 const server = http.createServer(app);
 const io = initializeSocket(server);
 app.set("socketIo", io);
-// const io = socketIo(server, {
-//   cors: {
-//     origin: "http://localhost:5173",
-//   },
-// });
+
 app.get("/api/download/:filename", (req, res) => {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, "public", "uploads", filename);
@@ -58,24 +54,6 @@ app.get("/api/download/:filename", (req, res) => {
   }
 });
 
-// const userSocketMap = new Map();
-
-// io.on("connection", (socket) => {
-
-//   socket.on("authenticate", (userId) => {
-//     userSocketMap.set(userId, socket.id);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("Client disconnected: " + socket.id);
-
-//     userSocketMap.forEach((value, key) => {
-//       if (value === socket.id) {
-//         userSocketMap.delete(key);
-//       }
-//     });
-//   });
-// });
 io.on("connection", handleSocketConnection);
 
 app.set("socketio", io);

@@ -19,8 +19,9 @@ const Login = () => {
       [field]: value
     });
   };
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = "useDispatch"();
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.auth
   );
@@ -29,6 +30,7 @@ const Login = () => {
     e.preventDefault();
     dispatch(login(credentials));
   };
+  
   useEffect(() => {
     if (isError) {
       console.log(message);
